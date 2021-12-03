@@ -98,15 +98,15 @@ const generateToken = async (req: Request, res: Response) => {
   jwt.verify(
     refreshToken,
     process.env.REFRESH_TOKEN_SECRET || "",
-    (err: any, user: any) => {
+    (err: any, userObj: any) => {
       if (err) {
         return res.status(403).json({
           message: "Refresh Token found but not valid",
         })
       }
-      const accessToken = generateAccessToken(user as IUser)
+      const accessToken = generateAccessToken(userObj.user)
       res.status(200).json({
-        token: accessToken,
+        accessToken,
       })
     },
   )
