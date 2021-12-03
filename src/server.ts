@@ -4,7 +4,6 @@ import bodyParser from "body-parser"
 import mongoose from "mongoose"
 import logging from "./config/logging"
 import config from "./config/config"
-import bookRoutes from "./routes/book"
 import userRoutes from "./routes/user"
 
 const NAMESPACE = "Server"
@@ -58,7 +57,6 @@ router.use((req, res, next) => {
 
 // Routes
 router.use("/api/user", userRoutes)
-router.use("/api/books", bookRoutes)
 
 // Error Handling
 router.use((req, res) => {
