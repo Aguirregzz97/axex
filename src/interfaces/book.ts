@@ -1,7 +1,7 @@
-import { Document } from "mongoose";
+import { Document } from "mongoose"
 
 export default interface IBook extends Document {
-  title: string;
-  author: string;
-  extraInformation: string;
+  title: string
+  author: string
+  extraInformation: string
 }
