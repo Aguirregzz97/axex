@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
 import User from "../models/user"
 import IUser from "../interfaces/user"
+import RefreshToken from "../models/refreshToken"
 
 dotenv.config()
 
@@ -65,15 +66,50 @@ const loginUser = async (req: Request, res: Response) => {
     // Authorize User
     const accessToken = generateAccessToken(user)
     const refreshToken = generateRefreshToken(user)
-    return res.status(200).json({
-      accessToken,
-      refreshToken,
-      user,
+    const RT = new RefreshToken({
+      token: refreshToken,
+    })
+    return RT.save().then(() => {
+      res.status(200).json({
+        accessToken,
+        refreshToken,
+        user,
+      })
     })
   }
   return res.status(400).json({
     message: "Password Incorrect",
   })
+}
+
+const generateToken = async (req: Request, res: Response) => {
+  const { refreshToken } = req.body
+  if (!refreshToken) {
+    return res.status(401).json({
+      message: "No refresh token provided",
+    })
+  }
+  const RTokens = await RefreshToken.find({}).exec()
+  if (RTokens.includes(refreshToken)) {
+    return res.status(403).json({
+      message: "This refresh token does not exist in our cache",
+    })
+  }
+  jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET || "",
+    (err: any, user: any) => {
+      if (err) {
+        return res.status(403).json({
+          message: "Refresh Token found but not valid",
+        })
+      }
+      const accessToken = generateAccessToken(user as IUser)
+      res.status(200).json({
+        token: accessToken,
+      })
+    },
+  )
 }
 
 const getUsers = async (req: Request, res: Response) => {
@@ -83,4 +119,4 @@ const getUsers = async (req: Request, res: Response) => {
   })
 }
 
-export default { createUser, loginUser, getUsers }
+export default { createUser, loginUser, getUsers, generateToken }
