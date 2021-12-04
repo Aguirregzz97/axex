@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import mongoose from "mongoose"
+import mongoose, { CallbackError } from "mongoose"
 import bcrypyt from "bcrypt"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
@@ -89,8 +89,8 @@ const generateToken = async (req: Request, res: Response) => {
       message: "No refresh token provided",
     })
   }
-  const RTokens = await RefreshToken.find({}).exec()
-  if (RTokens.includes(refreshToken)) {
+  const rTokenMongo = await RefreshToken.findOne({ token: refreshToken }).exec()
+  if (!rTokenMongo) {
     return res.status(403).json({
       message: "This refresh token does not exist in our cache",
     })
@@ -112,6 +112,27 @@ const generateToken = async (req: Request, res: Response) => {
   )
 }
 
+const logout = (req: Request, res: Response) => {
+  const RToken = req.body.refreshToken
+  RefreshToken.deleteOne(
+    { token: RToken },
+    (err: CallbackError, deletedToken: any) => {
+      if (err) {
+        res.status(500).json({
+          message: err.message,
+          err,
+        })
+      }
+      if (deletedToken.deletedCount === 0) {
+        return res.status(401).json({
+          message: "Refresh Token Not Found in cache",
+        })
+      }
+      return res.status(204)
+    },
+  )
+}
+
 const getUsers = async (req: Request, res: Response) => {
   const users = await User.find({}).exec()
   return res.status(200).json({
@@ -119,4 +140,4 @@ const getUsers = async (req: Request, res: Response) => {
   })
 }
 
-export default { createUser, loginUser, getUsers, generateToken }
+export default { createUser, loginUser, getUsers, generateToken, logout }
