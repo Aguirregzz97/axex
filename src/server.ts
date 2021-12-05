@@ -5,6 +5,11 @@ import mongoose from "mongoose"
 import logging from "./config/logging"
 import config from "./config/config"
 import userRoutes from "./routes/user"
+import incidentRoutes from "./routes/incident"
+import complaintRoutes from "./routes/complaint"
+import annoucementRoutes from "./routes/announcement"
+import residencyRoutes from "./routes/residency"
+import auth from "./middleware/auth"
 
 const NAMESPACE = "Server"
 const router = express()
@@ -57,6 +62,10 @@ router.use((req, res, next) => {
 
 // Routes
 router.use("/api/user", userRoutes)
+router.use("/api/incident", auth, incidentRoutes)
+router.use("/api/complaint", auth, complaintRoutes)
+router.use("/api/announcement", auth, annoucementRoutes)
+router.use("/api/residency", auth, residencyRoutes)
 
 // Error Handling
 router.use((req, res) => {
