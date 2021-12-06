@@ -9,6 +9,7 @@ import incidentRoutes from "./routes/incident"
 import complaintRoutes from "./routes/complaint"
 import annoucementRoutes from "./routes/announcement"
 import residencyRoutes from "./routes/residency"
+import paymentRoutes from "./routes/payment"
 import auth from "./middleware/auth"
 
 const NAMESPACE = "Server"
@@ -66,6 +67,7 @@ router.use("/api/incident", auth, incidentRoutes)
 router.use("/api/complaint", auth, complaintRoutes)
 router.use("/api/announcement", auth, annoucementRoutes)
 router.use("/api/residency", auth, residencyRoutes)
+router.use("/api/payment", auth, paymentRoutes)
 
 // Error Handling
 router.use((req, res) => {

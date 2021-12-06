@@ -12,3 +12,4 @@ export type DBRefs =
   | "complaint"
   | "residency"
   | "refreshToken"
+  | "payment"
