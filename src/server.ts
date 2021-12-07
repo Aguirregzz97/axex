@@ -11,6 +11,7 @@ import annoucementRoutes from "./routes/announcement"
 import residencyRoutes from "./routes/residency"
 import paymentRoutes from "./routes/payment"
 import auth from "./middleware/auth"
+import checkForExpiredPayments from "./jobs/payment"
 
 const NAMESPACE = "Server"
 const router = express()
@@ -68,6 +69,9 @@ router.use("/api/complaint", auth, complaintRoutes)
 router.use("/api/announcement", auth, annoucementRoutes)
 router.use("/api/residency", auth, residencyRoutes)
 router.use("/api/payment", auth, paymentRoutes)
+
+// Jobs
+checkForExpiredPayments.start()
 
 // Error Handling
 router.use((req, res) => {
