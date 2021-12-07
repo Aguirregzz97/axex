@@ -2,7 +2,6 @@ import { Request, Response } from "express"
 import { CallbackError } from "mongoose"
 import { IAnnouncement } from "../interfaces/announcement"
 import Announcement from "../models/announcement"
-import { DBRefs } from "../types/types"
 
 const createAnnouncement = (req: Request, res: Response) => {
   const { title, content, pictures, residency } = req.body
@@ -34,7 +33,7 @@ const getAnnouncements = (req: Request, res: Response) => {
   Announcement.find({
     residency,
   })
-    .populate("residency" as DBRefs)
+    .populate("residency")
     .exec((err: CallbackError, announcements) => {
       if (err) {
         res.status(500).json({

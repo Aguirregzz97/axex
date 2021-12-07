@@ -2,7 +2,6 @@ import { Request, Response } from "express"
 import { CallbackError } from "mongoose"
 import { IComplaint } from "../interfaces/complaint"
 import Complaint from "../models/complaint"
-import { DBRefs } from "../types/types"
 
 const createComplaint = (req: Request, res: Response) => {
   const { title, content, pictures, user, residency } = req.body
@@ -35,8 +34,8 @@ const getComplaints = (req: Request, res: Response) => {
   Complaint.find({
     residency,
   })
-    .populate("residency" as DBRefs)
-    .populate("user" as DBRefs)
+    .populate("residency")
+    .populate("user")
     .exec((err: CallbackError, complaints) => {
       if (err) {
         res.status(500).json({

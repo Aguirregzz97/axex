@@ -4,12 +4,14 @@ import { IPayment } from "../interfaces/payment"
 import Payment from "../models/payment"
 
 const createPayment = (req: Request, res: Response) => {
-  const { amount, status, user } = req.body as IPayment
+  const { amount, status, user, expireDate, month } = req.body as IPayment
 
   const payment = new Payment({
     amount,
     status,
     user,
+    expireDate,
+    month,
   })
 
   payment

@@ -23,7 +23,7 @@ const generateRefreshToken = (user: IUser) => {
 
 // Sign Up
 const createUser = async (req: Request, res: Response) => {
-  const { firstName, lastName, email, phone, password } = req.body
+  const { firstName, lastName, email, phone, password, blocked } = req.body
 
   const salt = await bcrypyt.genSalt()
   const hashedPassword = await bcrypyt.hash(password, salt)
@@ -34,6 +34,7 @@ const createUser = async (req: Request, res: Response) => {
     lastName,
     email,
     phone,
+    blocked,
     password: hashedPassword,
   })
 

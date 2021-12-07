@@ -1,4 +1,5 @@
 import { Document } from "mongoose"
+import { IPayment } from "./payment"
 
 export default interface IUser extends Document {
   firstName: string
@@ -6,4 +7,6 @@ export default interface IUser extends Document {
   email: string
   phone: string
   password: string
+  blocked: boolean
+  payments: IPayment[]
 }

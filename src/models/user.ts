@@ -8,6 +8,14 @@ const UserSchema: Schema = new Schema(
     email: { type: String, required: true },
     phone: { type: String, required: true },
     password: { type: String, required: true },
+    blocked: { type: Boolean, required: true },
+    payments: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "payment",
+        required: true,
+      },
+    ],
   },
   { timestamps: true },
 )

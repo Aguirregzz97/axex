@@ -2,7 +2,6 @@ import { Request, Response } from "express"
 import { CallbackError } from "mongoose"
 import { IIncident } from "../interfaces/incident"
 import Incident from "../models/incident"
-import { DBRefs } from "../types/types"
 
 const createIncident = (req: Request, res: Response) => {
   const { title, content, pictures, user, residency } = req.body
@@ -35,8 +34,8 @@ const getIncidents = (req: Request, res: Response) => {
   Incident.find({
     residency,
   })
-    .populate("residency" as DBRefs)
-    .populate("user" as DBRefs)
+    .populate("residency")
+    .populate("user")
     .exec((err: CallbackError, incidents) => {
       if (err) {
         res.status(500).json({
