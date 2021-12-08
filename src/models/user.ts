@@ -16,6 +16,20 @@ const UserSchema: Schema = new Schema(
         required: true,
       },
     ],
+    visits: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "visit",
+        required: true,
+      },
+    ],
+    arrivals: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "arrival",
+        required: true,
+      },
+    ],
   },
   { timestamps: true },
 )
