@@ -6,6 +6,9 @@ export interface IVisit extends Document {
   firstName: string
   lastName: string
   visitType: VisitType
-  iDImage: string
+  idImageURL: string
   LicensePlate: string
+  accessCode: string
+  expireDate: Date
+  expired: boolean
 }

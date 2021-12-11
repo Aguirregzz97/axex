@@ -10,6 +10,7 @@ import complaintRoutes from "./routes/complaint"
 import annoucementRoutes from "./routes/announcement"
 import residencyRoutes from "./routes/residency"
 import paymentRoutes from "./routes/payment"
+import visitRoutes from "./routes/visit"
 import auth from "./middleware/auth"
 import checkForExpiredPayments from "./jobs/payment"
 
@@ -43,9 +44,8 @@ router.use((req, res, next) => {
   next()
 })
 
-// Parse Request
-router.use(bodyParser.urlencoded({ extended: false }))
-router.use(bodyParser.json())
+// create middleware application/json parser
+const jsonParser = bodyParser.json()
 
 // Rules of API
 router.use((req, res, next) => {
@@ -63,12 +63,13 @@ router.use((req, res, next) => {
 })
 
 // Routes
-router.use("/api/user", userRoutes)
-router.use("/api/incident", auth, incidentRoutes)
-router.use("/api/complaint", auth, complaintRoutes)
-router.use("/api/announcement", auth, annoucementRoutes)
-router.use("/api/residency", auth, residencyRoutes)
-router.use("/api/payment", auth, paymentRoutes)
+router.use("/api/user", jsonParser, userRoutes)
+router.use("/api/incident", auth, jsonParser, incidentRoutes)
+router.use("/api/complaint", auth, jsonParser, complaintRoutes)
+router.use("/api/announcement", auth, jsonParser, annoucementRoutes)
+router.use("/api/residency", auth, jsonParser, residencyRoutes)
+router.use("/api/payment", auth, jsonParser, paymentRoutes)
+router.use("/api/visit", auth, visitRoutes)
 
 // Jobs
 checkForExpiredPayments.start()

@@ -6,6 +6,7 @@ import IUser from "../interfaces/user"
 import User from "../models/user"
 import Payment from "../models/payment"
 import dateUtils from "../utils/dates"
+import config from "../config/config"
 
 const NAMESPACE = "Server"
 
@@ -46,11 +47,11 @@ const changePaymentStatus = (payment: IPayment) => {
   )
 }
 
-//   "0 0 * * *"  Minute 0, hour 0, every day every month, every day of the week
-
+// minute hour dayofmonth month dayofweek
 const checkForExpiredPayments = cron.schedule(
-  "0 0 * * *",
+  "1 1 1 * *",
   () => {
+    if (config.server.hostname === "localhost") return
     logging.info(NAMESPACE, "Check For Expired Payments Job Started")
     User.find({})
       .populate({ path: "payments", match: { status: "pending" } })
