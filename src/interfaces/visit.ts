@@ -5,6 +5,7 @@ type VisitType = "permanent" | "singleTime"
 export interface IVisit extends Document {
   firstName: string
   lastName: string
+  user: string
   visitType: VisitType
   idImageURL: string
   LicensePlate: string

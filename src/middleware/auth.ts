@@ -15,13 +15,13 @@ const authenticateToken = (req: any, res: Response, next: NextFunction) => {
   jwt.verify(
     token,
     process.env.ACCESS_TOKEN_SECRET || "",
-    (err: any, user: any) => {
+    (err: any, result: any) => {
       if (err) {
         return res.status(403).json({
           message: "Invalid Json Web Token",
         })
       }
-      req.user = user
+      req.user = result.user
       next()
     },
   )

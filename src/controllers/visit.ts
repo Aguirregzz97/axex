@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import { Request, Response, Express } from "express"
+import { Response, Express } from "express"
 import uploadCareClient from "../clients/uploadCare"
 import logging from "../config/logging"
 import Visit from "../models/visit"
@@ -29,7 +29,7 @@ const uploadIdImage = async (file: Express.Multer.File) => {
   })
 }
 
-const createVisit = async (req: Request, res: Response) => {
+const createVisit = async (req: any, res: Response) => {
   const { firstName, lastName, visitType, licensePlate, expireDate } = req.body
   let idImageURL = ""
   if (req.file) {
@@ -38,8 +38,10 @@ const createVisit = async (req: Request, res: Response) => {
   }
   const visitId = new mongoose.Types.ObjectId()
   const accessId = new mongoose.Types.ObjectId()
+  const userId = req.user._id
   const visit = new Visit({
     _id: visitId,
+    user: userId,
     firstName,
     lastName,
     visitType,
