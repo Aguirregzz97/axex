@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import { Response, Express } from "express"
+import { Response, Express, Request } from "express"
 import uploadCareClient from "../clients/uploadCare"
 import logging from "../config/logging"
 import Visit from "../models/visit"
@@ -29,8 +29,9 @@ const uploadIdImage = async (file: Express.Multer.File) => {
   })
 }
 
-const createVisit = async (req: any, res: Response) => {
-  const { firstName, lastName, visitType, licensePlate, expireDate } = req.body
+const createVisit = async (req: Request, res: Response) => {
+  const { firstName, lastName, visitType, licensePlate, expireDate, user } =
+    req.body
   let idImageURL = ""
   if (req.file) {
     const { file } = req
@@ -38,10 +39,9 @@ const createVisit = async (req: any, res: Response) => {
   }
   const visitId = new mongoose.Types.ObjectId()
   const accessId = new mongoose.Types.ObjectId()
-  const userId = req.user._id
   const visit = new Visit({
     _id: visitId,
-    user: userId,
+    user,
     firstName,
     lastName,
     visitType,
@@ -69,4 +69,19 @@ const createVisit = async (req: any, res: Response) => {
     })
 }
 
-export default { createVisit }
+const getUserVisits = async (req: Request, res: Response) => {
+  const { user } = req.body
+  try {
+    const userVisits = await Visit.find({ user }).exec()
+    res.status(200).json({
+      userVisits,
+    })
+  } catch (error: any) {
+    res.status(500).json({
+      message: error.message,
+      error,
+    })
+  }
+}
+
+export default { createVisit, getUserVisits }

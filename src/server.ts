@@ -9,10 +9,13 @@ import incidentRoutes from "./routes/incident"
 import complaintRoutes from "./routes/complaint"
 import annoucementRoutes from "./routes/announcement"
 import residencyRoutes from "./routes/residency"
+import paymentRequestRoutes from "./routes/paymentRequest"
 import paymentRoutes from "./routes/payment"
 import visitRoutes from "./routes/visit"
+import unitRoutes from "./routes/unit"
 import auth from "./middleware/auth"
-import checkForExpiredPayments from "./jobs/payment"
+import checkForExpiredPaymentRequests from "./jobs/checkExpiredPaymentRequest"
+import generateMonthlyPaymentRequests from "./jobs/generateMonthlyPaymentRequests"
 
 const NAMESPACE = "Server"
 const router = express()
@@ -68,11 +71,14 @@ router.use("/api/incident", auth, jsonParser, incidentRoutes)
 router.use("/api/complaint", auth, jsonParser, complaintRoutes)
 router.use("/api/announcement", auth, jsonParser, annoucementRoutes)
 router.use("/api/residency", auth, jsonParser, residencyRoutes)
+router.use("/api/payment-request", auth, jsonParser, paymentRequestRoutes)
 router.use("/api/payment", auth, jsonParser, paymentRoutes)
 router.use("/api/visit", auth, visitRoutes)
+router.use("/api/unit", auth, jsonParser, unitRoutes)
 
 // Jobs
-checkForExpiredPayments.start()
+checkForExpiredPaymentRequests.start()
+generateMonthlyPaymentRequests.start()
 
 // Error Handling
 router.use((req, res) => {

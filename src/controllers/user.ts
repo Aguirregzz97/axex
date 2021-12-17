@@ -24,6 +24,7 @@ const generateRefreshToken = (user: IUser) => {
 // Sign Up
 const createUser = async (req: Request, res: Response) => {
   const {
+    residency,
     firstName,
     lastName,
     email,
@@ -31,8 +32,7 @@ const createUser = async (req: Request, res: Response) => {
     password,
     blocked,
     visits,
-    arrivals,
-    payments,
+    paymentRequests,
   } = req.body
 
   const salt = await bcrypyt.genSalt()
@@ -40,6 +40,7 @@ const createUser = async (req: Request, res: Response) => {
 
   const user = new User({
     _id: new mongoose.Types.ObjectId(),
+    residency,
     firstName,
     lastName,
     email,
@@ -47,8 +48,7 @@ const createUser = async (req: Request, res: Response) => {
     blocked,
     password: hashedPassword,
     visits,
-    payments,
-    arrivals,
+    paymentRequests,
   })
 
   return user
@@ -154,4 +154,26 @@ const getUsers = async (req: Request, res: Response) => {
   })
 }
 
-export default { createUser, loginUser, getUsers, generateToken, logout }
+const getResidencyUsers = async (req: Request, res: Response) => {
+  const { residency } = req.body
+  try {
+    const residencyUsers = await User.find({ residency }).exec()
+    res.status(200).json({
+      residencyUsers,
+    })
+  } catch (error: any) {
+    res.status(500).json({
+      message: error.message,
+      error,
+    })
+  }
+}
+
+export default {
+  createUser,
+  loginUser,
+  getUsers,
+  generateToken,
+  logout,
+  getResidencyUsers,
+}

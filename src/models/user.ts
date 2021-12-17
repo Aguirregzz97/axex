@@ -9,25 +9,22 @@ const UserSchema: Schema = new Schema(
     phone: { type: String, required: true },
     password: { type: String, required: true },
     blocked: { type: Boolean, required: true },
-    payments: [
+    residency: {
+      type: mongoose.Types.ObjectId,
+      required: true,
+      ref: "residency",
+    },
+    unit: { type: mongoose.Types.ObjectId, ref: "unit" },
+    paymentRequests: [
       {
         type: mongoose.Types.ObjectId,
-        ref: "payment",
-        required: true,
+        ref: "paymentRequest",
       },
     ],
     visits: [
       {
         type: mongoose.Types.ObjectId,
         ref: "visit",
-        required: true,
-      },
-    ],
-    arrivals: [
-      {
-        type: mongoose.Types.ObjectId,
-        ref: "arrival",
-        required: true,
       },
     ],
   },

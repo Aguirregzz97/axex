@@ -1,48 +1,65 @@
 import { Request, Response } from "express"
-import { CallbackError, Error } from "mongoose"
-import { IPayment } from "../interfaces/payment"
 import Payment from "../models/payment"
+import PaymentRequest from "../models/paymentRequest"
+import User from "../models/user"
+
+const getUserPayments = async (req: Request, res: Response) => {
+  const { user } = req.body
+  try {
+    const userPaymentRequests = await PaymentRequest.find({ user }).exec()
+    const payments = await Payment.find({
+      paymentRequest: { $in: userPaymentRequests },
+    })
+      .populate({ path: "paymentRequest" })
+      .exec()
+    res.status(200).json({
+      payments,
+    })
+  } catch (error: any) {
+    res.status(500).json({
+      message: error.message,
+      error,
+    })
+  }
+}
 
 const createPayment = (req: Request, res: Response) => {
-  const { amount, status, user, expireDate, month } = req.body as IPayment
-
+  const { paymentRequest, approved } = req.body
   const payment = new Payment({
-    amount,
-    status,
-    user,
-    expireDate,
-    month,
+    paymentRequest,
+    approved,
   })
-
   payment
     .save()
     .then((result) => {
-      return res.status(201).json({
+      res.status(201).json({
         result,
       })
     })
-    .catch((error: Error) => {
-      return res.status(500).json({
-        message: error.message,
-        error,
-      })
+    .catch((error) => {
+      res.status(500).json({ message: error.message, error })
     })
 }
 
-const getUserPayments = (req: Request, res: Response) => {
-  const { user } = req.body
-
-  Payment.find({ user }).exec((error: CallbackError, payments) => {
-    if (error) {
-      return res.json({
-        message: error.message,
-        error,
-      })
-    }
-    return res.status(200).json({
-      payments,
+const getResidencyPayments = async (req: Request, res: Response) => {
+  const { residency } = req.body
+  try {
+    const residencyUsers = await User.find({ residency }).exec()
+    const residencyPaymentRequests = await PaymentRequest.find({
+      user: { $in: residencyUsers },
+    }).exec()
+    const residencyPayments = await Payment.find({
+      paymentRequest: { $in: residencyPaymentRequests },
+    }).exec()
+    res.status(200).json({
+      residencyPayments,
     })
-  })
+  } catch (error: any) {
+    res.status(500).json({
+      message: error.message,
+      error,
+    })
+  }
 }
 
-export default { createPayment, getUserPayments }
+export default { getUserPayments, createPayment, getResidencyPayments }

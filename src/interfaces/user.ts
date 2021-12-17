@@ -1,6 +1,6 @@
 import { Document } from "mongoose"
 import { IArrival } from "./arrival"
-import { IPayment } from "./payment"
+import { IPaymentRequest } from "./paymentRequest"
 import { IVisit } from "./visit"
 
 export default interface IUser extends Document {
@@ -10,7 +10,7 @@ export default interface IUser extends Document {
   phone: string
   password: string
   blocked: boolean
-  payments: IPayment[]
+  paymentRequests: IPaymentRequest[]
   visits: IVisit[]
   arrivals: IArrival[]
 }

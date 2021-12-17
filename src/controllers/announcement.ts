@@ -3,7 +3,7 @@ import { CallbackError } from "mongoose"
 import { IAnnouncement } from "../interfaces/announcement"
 import Announcement from "../models/announcement"
 
-const createAnnouncement = (req: Request, res: Response) => {
+const createAnnouncement = async (req: Request, res: Response) => {
   const { title, content, pictures, residency } = req.body
 
   const announcement: IAnnouncement = new Announcement({
