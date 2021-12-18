@@ -30,10 +30,12 @@ const UPLOAD_CARE = {
   publicKey: UPLOAD_CARE_PUBLIC_KEY,
 }
 
+const API_URL = process.env.API_URL || "http://localhost:1337"
 const SERVER_HOSTNAME = process.env.SERVER_HOSTNAME || "localhost"
 const SERVER_PORT = process.env.SERVER_PORT || 1337
 
 const SERVER = {
+  apiUrl: API_URL,
   hostname: SERVER_HOSTNAME,
   port: SERVER_PORT,
 }

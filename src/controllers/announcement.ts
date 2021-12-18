@@ -36,12 +36,12 @@ const getAnnouncements = (req: Request, res: Response) => {
     .populate("residency")
     .exec((err: CallbackError, announcements) => {
       if (err) {
-        res.status(500).json({
+        return res.status(500).json({
           message: err.message,
           err,
         })
       }
-      res.status(200).json({
+      return res.status(200).json({
         announcements,
       })
     })

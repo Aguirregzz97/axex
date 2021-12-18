@@ -1,4 +1,5 @@
 import { Document } from "mongoose"
+import { IArrival } from "./arrival"
 
 type VisitType = "permanent" | "singleTime"
 
@@ -8,8 +9,10 @@ export interface IVisit extends Document {
   user: string
   visitType: VisitType
   idImageURL: string
+  qrCodeURL: string
   LicensePlate: string
   accessCode: string
   expireDate: Date
-  expired: boolean
+  hasEntered: boolean
+  arrivals: IArrival[]
 }

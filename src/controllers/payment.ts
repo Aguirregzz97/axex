@@ -12,11 +12,11 @@ const getUserPayments = async (req: Request, res: Response) => {
     })
       .populate({ path: "paymentRequest" })
       .exec()
-    res.status(200).json({
+    return res.status(200).json({
       payments,
     })
   } catch (error: any) {
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message,
       error,
     })
@@ -32,12 +32,12 @@ const createPayment = (req: Request, res: Response) => {
   payment
     .save()
     .then((result) => {
-      res.status(201).json({
+      return res.status(201).json({
         result,
       })
     })
     .catch((error) => {
-      res.status(500).json({ message: error.message, error })
+      return res.status(500).json({ message: error.message, error })
     })
 }
 
@@ -51,11 +51,11 @@ const getResidencyPayments = async (req: Request, res: Response) => {
     const residencyPayments = await Payment.find({
       paymentRequest: { $in: residencyPaymentRequests },
     }).exec()
-    res.status(200).json({
+    return res.status(200).json({
       residencyPayments,
     })
   } catch (error: any) {
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message,
       error,
     })

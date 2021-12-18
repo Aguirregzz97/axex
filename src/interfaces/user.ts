@@ -1,5 +1,4 @@
 import { Document } from "mongoose"
-import { IArrival } from "./arrival"
 import { IPaymentRequest } from "./paymentRequest"
 import { IVisit } from "./visit"
 
@@ -12,5 +11,4 @@ export default interface IUser extends Document {
   blocked: boolean
   paymentRequests: IPaymentRequest[]
   visits: IVisit[]
-  arrivals: IArrival[]
 }

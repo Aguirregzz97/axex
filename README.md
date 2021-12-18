@@ -19,3 +19,11 @@ to start the server locally in port 1337
 ```
 yarn start
 ```
+
+## Build
+
+to build proyect into /build run
+
+```
+yarn build
+```

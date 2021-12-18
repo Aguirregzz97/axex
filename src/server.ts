@@ -13,6 +13,7 @@ import paymentRequestRoutes from "./routes/paymentRequest"
 import paymentRoutes from "./routes/payment"
 import visitRoutes from "./routes/visit"
 import unitRoutes from "./routes/unit"
+import arrivalRoutes from "./routes/arrival"
 import auth from "./middleware/auth"
 import checkForExpiredPaymentRequests from "./jobs/checkExpiredPaymentRequest"
 import generateMonthlyPaymentRequests from "./jobs/generateMonthlyPaymentRequests"
@@ -74,6 +75,7 @@ router.use("/api/residency", auth, jsonParser, residencyRoutes)
 router.use("/api/payment-request", auth, jsonParser, paymentRequestRoutes)
 router.use("/api/payment", auth, jsonParser, paymentRoutes)
 router.use("/api/visit", auth, visitRoutes)
+router.use("/api/arrival", jsonParser, arrivalRoutes)
 router.use("/api/unit", auth, jsonParser, unitRoutes)
 
 // Jobs

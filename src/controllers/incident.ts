@@ -38,12 +38,12 @@ const getIncidents = (req: Request, res: Response) => {
     .populate("user")
     .exec((err: CallbackError, incidents) => {
       if (err) {
-        res.status(500).json({
+        return res.status(500).json({
           message: err.message,
           err,
         })
       }
-      res.status(200).json({
+      return res.status(200).json({
         incidents,
       })
     })

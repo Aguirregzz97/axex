@@ -55,11 +55,11 @@ const getResidencyPaymentRequests = async (req: Request, res: Response) => {
     const paymentRequests = await PaymentRequest.find({
       user: { $in: residencyUsers },
     }).exec()
-    res.status(200).json({
+    return res.status(200).json({
       paymentRequests,
     })
   } catch (error: any) {
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message,
       error,
     })

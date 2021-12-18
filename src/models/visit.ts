@@ -15,7 +15,8 @@ const VisitSchema: Schema = new Schema(
     licensePlate: { type: String },
     accessCode: { type: String, required: true },
     expireDate: { type: Date, required: true },
-    expired: { type: Boolean, required: true },
+    hasEntered: { type: Boolean, required: true },
+    qrCodeURL: { type: String, required: true },
     arrivals: [
       {
         type: mongoose.Types.ObjectId,

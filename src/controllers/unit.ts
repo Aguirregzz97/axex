@@ -28,12 +28,12 @@ const createUnit = (req: Request, res: Response) => {
   unit
     .save()
     .then((result) => {
-      res.status(201).json({
+      return res.status(201).json({
         result,
       })
     })
     .catch((error) => {
-      res.status(500).json({
+      return res.status(500).json({
         message: error.message,
         error,
       })
@@ -47,11 +47,11 @@ const getResidencyUnits = async (req: Request, res: Response) => {
     const residencyUnits = await Unit.find({
       user: { $in: residencyUsers },
     }).exec()
-    res.status(200).json({
+    return res.status(200).json({
       residencyUnits,
     })
   } catch (error: any) {
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message,
       error,
     })
@@ -62,12 +62,12 @@ const getUserUnit = (req: Request, res: Response) => {
   const { user } = req.body
   Unit.find({ user }).exec((error, unit) => {
     if (error) {
-      res.status(500).json({
+      return res.status(500).json({
         message: error.message,
         error,
       })
     }
-    res.status(200).json({
+    return res.status(200).json({
       unit,
     })
   })

@@ -84,7 +84,7 @@ const loginUser = async (req: Request, res: Response) => {
       token: refreshToken,
     })
     return RT.save().then(() => {
-      res.status(200).json({
+      return res.status(200).json({
         accessToken,
         refreshToken,
         user,
@@ -119,7 +119,7 @@ const generateToken = async (req: Request, res: Response) => {
         })
       }
       const accessToken = generateAccessToken(userObj.user)
-      res.status(200).json({
+      return res.status(200).json({
         accessToken,
       })
     },
@@ -132,7 +132,7 @@ const logout = (req: Request, res: Response) => {
     { token: RToken },
     (err: CallbackError, deletedToken: any) => {
       if (err) {
-        res.status(500).json({
+        return res.status(500).json({
           message: err.message,
           err,
         })
@@ -158,11 +158,11 @@ const getResidencyUsers = async (req: Request, res: Response) => {
   const { residency } = req.body
   try {
     const residencyUsers = await User.find({ residency }).exec()
-    res.status(200).json({
+    return res.status(200).json({
       residencyUsers,
     })
   } catch (error: any) {
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message,
       error,
     })

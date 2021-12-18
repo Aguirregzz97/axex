@@ -4,6 +4,7 @@ import uploadCareClient from "../clients/uploadCare"
 import logging from "../config/logging"
 import Visit from "../models/visit"
 import constants from "../constants/globalConstants"
+import config from "../config/config"
 
 const NAMESPACE = "Server"
 
@@ -38,7 +39,8 @@ const createVisit = async (req: Request, res: Response) => {
     idImageURL = await uploadIdImage(file)
   }
   const visitId = new mongoose.Types.ObjectId()
-  const accessId = new mongoose.Types.ObjectId()
+  const accessCode = new mongoose.Types.ObjectId()
+  const qrCodeURL = `${config.server.apiUrl}/api/arrival/create/arrival?visit=${visitId}&accessCode=${accessCode}`
   const visit = new Visit({
     _id: visitId,
     user,
@@ -47,22 +49,23 @@ const createVisit = async (req: Request, res: Response) => {
     visitType,
     licensePlate,
     idImageURL,
-    accessCode: `${accessId}/${visitId}`,
+    accessCode,
+    qrCodeURL,
     expireDate:
       visitType === "permanent"
         ? constants.noExpireDate.toISOString()
         : expireDate,
-    expired: false,
+    hasEntered: false,
   })
   visit
     .save()
     .then((result) => {
-      res.status(201).json({
+      return res.status(201).json({
         result,
       })
     })
     .catch((error) => {
-      res.status(500).json({
+      return res.status(500).json({
         message: error.message,
         error,
       })
@@ -73,11 +76,11 @@ const getUserVisits = async (req: Request, res: Response) => {
   const { user } = req.body
   try {
     const userVisits = await Visit.find({ user }).exec()
-    res.status(200).json({
+    return res.status(200).json({
       userVisits,
     })
   } catch (error: any) {
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message,
       error,
     })
