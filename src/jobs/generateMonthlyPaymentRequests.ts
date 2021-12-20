@@ -4,7 +4,6 @@ import logging from "../config/logging"
 import { IUnit } from "../interfaces/unit"
 import Unit from "../models/unit"
 import PaymentRequest from "../models/paymentRequest"
-import config from "../config/config"
 
 const NAMESPACE = "Server"
 
@@ -50,18 +49,21 @@ const generatePayments = (units: IUnit[]) => {
 
 // minute hour dayofmonth month dayofweek
 // at 01:30
-const generateMonthlyPaymentRequests = cron.schedule("30 01 * * *", () => {
-  if (config.server.hostname === "localhost") return
-  logging.info(NAMESPACE, "Generate Monthly Payment Request Job Started...")
-  Unit.find({})
-    .select("_id dayOfPayment monthlyAmount user")
-    .exec((error, units) => {
-      if (error) {
-        logging.error(NAMESPACE, error.message, error)
-        return
-      }
-      generatePayments(units)
+const generateMonthlyPaymentRequests = () => {
+  cron
+    .schedule("30 01 * * *", () => {
+      logging.info(NAMESPACE, "Generate Monthly Payment Request Job Started...")
+      Unit.find({})
+        .select("_id dayOfPayment monthlyAmount user")
+        .exec((error, units) => {
+          if (error) {
+            logging.error(NAMESPACE, error.message, error)
+            return
+          }
+          generatePayments(units)
+        })
     })
-})
+    .start()
+}
 
 export default generateMonthlyPaymentRequests

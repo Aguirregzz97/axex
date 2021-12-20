@@ -12,16 +12,31 @@ const MONGO_OPTIONS = {
   retryWrites: false,
 }
 
+const { MONGO_URL, MONGO_TEST_URL, MONGO_DEV_URL, NODE_ENV } = process.env
+
+const getMongoUrl = () => {
+  switch (NODE_ENV) {
+    case "production":
+      return MONGO_URL
+    case "development":
+      return MONGO_DEV_URL
+    case "test":
+      return MONGO_TEST_URL
+    default:
+      return MONGO_DEV_URL
+  }
+}
+
 const MONGO_USERNAME = process.env.MONGO_USERNAME || "username"
 const MONGO_PASSWORD = process.env.MONGO_PASSWORD || "supersecretpassword"
-const MONGO_URL = process.env.MONGO_URL || ""
+const MONGO_URL_ENV = getMongoUrl() || ""
 
 const MONGO = {
-  host: MONGO_URL,
+  host: MONGO_URL_ENV,
   username: MONGO_USERNAME,
   password: MONGO_PASSWORD,
   options: MONGO_OPTIONS,
-  url: `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_URL}`,
+  url: `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_URL_ENV}`,
 }
 
 const UPLOAD_CARE_PUBLIC_KEY = process.env.UPLOAD_CARE_PUBLIC_KEY || "key"
@@ -38,6 +53,7 @@ const SERVER = {
   apiUrl: API_URL,
   hostname: SERVER_HOSTNAME,
   port: SERVER_PORT,
+  nodeEnv: NODE_ENV,
 }
 
 const config = {

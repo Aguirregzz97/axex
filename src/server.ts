@@ -79,8 +79,10 @@ router.use("/api/arrival", jsonParser, arrivalRoutes)
 router.use("/api/unit", auth, jsonParser, unitRoutes)
 
 // Jobs
-checkForExpiredPaymentRequests.start()
-generateMonthlyPaymentRequests.start()
+if (config.server.nodeEnv === "production") {
+  checkForExpiredPaymentRequests()
+  generateMonthlyPaymentRequests()
+}
 
 // Error Handling
 router.use((req, res) => {
@@ -99,3 +101,5 @@ httpServer.listen(config.server.port, () => {
     `Server running on ${config.server.hostname}:${config.server.port}`,
   )
 })
+
+export default { router, httpServer }

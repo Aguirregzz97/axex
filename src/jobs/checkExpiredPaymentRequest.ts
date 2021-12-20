@@ -6,7 +6,6 @@ import IUser from "../interfaces/user"
 import User from "../models/user"
 import PaymentRequest from "../models/paymentRequest"
 import dateUtils from "../utils/dates"
-import config from "../config/config"
 
 const NAMESPACE = "Server"
 
@@ -57,39 +56,45 @@ const expirePaymentRequest = (paymentRequest: IPaymentRequest) => {
 
 // minute hour dayofmonth month dayofweek
 // at 00:30
-const checkForExpiredPaymentRequests = cron.schedule(
-  "30 01 * * *",
-  () => {
-    if (config.server.hostname === "localhost") return
-    logging.info(NAMESPACE, "Check For Expired Payment Requests Job Started")
-    User.find({})
-      .populate({
-        path: "paymentRequests",
-        match: { expired: false, payed: false },
-      })
-      .select("paymentRequests firstName lastName")
-      .exec((err: CallbackError, users) => {
-        if (err) {
-          logging.error(NAMESPACE, err.message, err)
-          return
-        }
-        if (!users) return
-        users.forEach((user) => {
-          const pendingPaymentRequests = user.paymentRequests
-          pendingPaymentRequests.forEach((ppr: IPaymentRequest) => {
-            const { expireDate } = ppr
-            if (dateUtils.hasExpired(expireDate)) {
-              logPaymentRequestExpired(user, ppr)
-              expirePaymentRequest(ppr)
-              blockUser(user)
-            }
+const checkForExpiredPaymentRequests = () => {
+  cron
+    .schedule(
+      "30 01 * * *",
+      () => {
+        logging.info(
+          NAMESPACE,
+          "Check For Expired Payment Requests Job Started",
+        )
+        User.find({})
+          .populate({
+            path: "paymentRequests",
+            match: { expired: false, payed: false },
           })
-        })
-      })
-  },
-  {
-    timezone: "America/Mexico_City",
-  },
-)
+          .select("paymentRequests firstName lastName")
+          .exec((err: CallbackError, users) => {
+            if (err) {
+              logging.error(NAMESPACE, err.message, err)
+              return
+            }
+            if (!users) return
+            users.forEach((user) => {
+              const pendingPaymentRequests = user.paymentRequests
+              pendingPaymentRequests.forEach((ppr: IPaymentRequest) => {
+                const { expireDate } = ppr
+                if (dateUtils.hasExpired(expireDate)) {
+                  logPaymentRequestExpired(user, ppr)
+                  expirePaymentRequest(ppr)
+                  blockUser(user)
+                }
+              })
+            })
+          })
+      },
+      {
+        timezone: "America/Mexico_City",
+      },
+    )
+    .start()
+}
 
 export default checkForExpiredPaymentRequests
