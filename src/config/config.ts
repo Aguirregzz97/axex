@@ -48,12 +48,16 @@ const UPLOAD_CARE = {
 const API_URL = process.env.API_URL || "http://localhost:1337"
 const SERVER_HOSTNAME = process.env.SERVER_HOSTNAME || "localhost"
 const SERVER_PORT = process.env.SERVER_PORT || 1337
+const TEST_USER_EMAIL = process.env.TEST_USER_EMAIL || ""
+const TEST_USER_PASSWORD = process.env.TEST_USER_PASSWORD || ""
 
 const SERVER = {
   apiUrl: API_URL,
   hostname: SERVER_HOSTNAME,
   port: SERVER_PORT,
   nodeEnv: NODE_ENV,
+  testUserEmail: TEST_USER_EMAIL,
+  testUserPassword: TEST_USER_PASSWORD,
 }
 
 const config = {
