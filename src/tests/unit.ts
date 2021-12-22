@@ -3,7 +3,7 @@ import server from "../server"
 import testHelpers from "./helpers/testHelpers"
 
 const unitTests = () => {
-  it("should create a unit", async () => {
+  test("should create a unit", async () => {
     const userId = await testHelpers.getUserId()
     const response = await request(server.router)
       .post("/api/unit/create/unit")

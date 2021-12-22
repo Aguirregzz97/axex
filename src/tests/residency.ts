@@ -4,7 +4,7 @@ import server from "../server"
 
 const residencyTests = () => {
   let residencyId = ""
-  it("should create residency", async () => {
+  test("should create residency", async () => {
     const response = await request(server.router)
       .post("/api/residency/create/residency")
       .set("accept", "application/json")
@@ -19,7 +19,7 @@ const residencyTests = () => {
     expect(response.status).toBe(201)
   })
 
-  it("should get a residency", async () => {
+  test("should get a residency", async () => {
     await request(server.router)
       .get("/api/residency/get/residency")
       .set("accept", "application/json")

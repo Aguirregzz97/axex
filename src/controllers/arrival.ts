@@ -34,13 +34,16 @@ const createArrival = async (req: Request, res: Response) => {
     }
     // At this point the visit can access
     if (arrivalsVisit.visitType === "singleTime") {
-      await Visit.updateOne({ _id: visit }, { $set: { expired: true } }).exec()
+      await Visit.updateOne(
+        { _id: visit },
+        { $set: { hasEntered: true } },
+      ).exec()
     }
     const arrival = new Arrival({
       visit,
     })
     const result = await arrival.save()
-    return res.status(200).json({
+    return res.status(201).json({
       result,
     })
   } catch (error: any) {

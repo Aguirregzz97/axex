@@ -10,7 +10,7 @@ dotenv.config()
 const userTests = () => {
   const userEmail = config.server.testUserEmail
   const userPassword = config.server.testUserPassword
-  it("should create user", async () => {
+  test("should create user", async () => {
     const residencyId = await testHelpers.getResidencyId()
     const response = await request(server.router)
       .post("/api/user/create/user")
@@ -27,7 +27,7 @@ const userTests = () => {
     expect(response.status).toBe(201)
   })
 
-  it("should login user", async () => {
+  test("should login user", async () => {
     const response = await request(server.router)
       .get("/api/user/get/login/user")
       .set("accept", "application/json")
@@ -39,7 +39,7 @@ const userTests = () => {
     expect(response.status).toBe(200)
   })
 
-  it("should get users", async () => {
+  test("should get users", async () => {
     const response = await request(server.router)
       .get("/api/user/get/users")
       .set("accept", "application/json")
