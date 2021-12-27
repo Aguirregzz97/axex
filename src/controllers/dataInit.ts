@@ -7,6 +7,8 @@ import User from "../models/user"
 import Unit from "../models/unit"
 import Visit from "../models/visit"
 import Arrival from "../models/arrival"
+import PaymentRequest from "../models/paymentRequest"
+import Payment from "../models/payment"
 import IUser from "../interfaces/user"
 import logging from "../config/logging"
 import config from "../config/config"
@@ -22,6 +24,8 @@ const deleteAllDocuments = async () => {
   await Unit.deleteMany({})
   await Visit.deleteMany({})
   await Arrival.deleteMany({})
+  await PaymentRequest.deleteMany({})
+  await Payment.deleteMany({})
 }
 
 const initResidency = async (): Promise<mongoose.Types.ObjectId> => {
@@ -297,6 +301,65 @@ const initArrivals = async () => {
   })
 }
 
+const initPaymentRequests = async () => {
+  logging.info(NAMESPACE, "Creating Payment Requests...")
+  const users = await User.find({ userRole: "resident" }).exec()
+  const paymentRequests = []
+  for (let i = 0; i < users.length; i += 1) {
+    // generate random number between 0 and 7
+    const randNum = Math.floor(Math.random() * 8)
+    if (randNum === 0) {
+      const paymentRequest = new PaymentRequest({
+        amount: faker.datatype.number({ min: 10, max: 9000 }),
+        description: faker.commerce.productDescription(),
+        user: users[i],
+        expireDate: new Date().toISOString(),
+        expired: false,
+        payed: false,
+      })
+      paymentRequests.push(paymentRequest)
+    }
+  }
+
+  await PaymentRequest.insertMany(paymentRequests).catch((error) => {
+    throw new Error(error)
+  })
+}
+
+const setPaymentRequestsAsPayed = async (
+  paymentRequestId: mongoose.Types.ObjectId,
+) => {
+  await PaymentRequest.updateOne(
+    { _id: paymentRequestId },
+    { $set: { payed: true } },
+  )
+}
+
+const initPayments = async () => {
+  logging.info(NAMESPACE, "Creating Payments...")
+  const paymentRequests = await PaymentRequest.find({}).exec()
+  const payments = []
+  const promises = []
+  for (let i = 0; i < paymentRequests.length; i += 1) {
+    // generate rand num between 0 and 1
+    const randNum = Math.floor(Math.random() * 2)
+    if (randNum === 0) {
+      const payment = new Payment({
+        paymentRequest: paymentRequests[i],
+        approved: faker.datatype.boolean(),
+      })
+      promises.push(setPaymentRequestsAsPayed(paymentRequests[i].id))
+      payments.push(payment)
+    }
+  }
+
+  await Promise.all(promises)
+
+  await Payment.insertMany(payments).catch((error) => {
+    throw new Error(error)
+  })
+}
+
 const createDataInit = async (_req: Request, res: Response) => {
   await deleteAllDocuments()
   try {
@@ -306,6 +369,8 @@ const createDataInit = async (_req: Request, res: Response) => {
     await initUnits()
     await initVisits()
     await initArrivals()
+    await initPaymentRequests()
+    await initPayments()
     return res.status(201).json({
       message: "succesfully inited data :D pog pog",
     })

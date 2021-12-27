@@ -9,6 +9,13 @@ const PaymentRequestSchema: Schema = new Schema(
   {
     amount: { type: Number, required: true },
     user: { type: mongoose.Types.ObjectId, required: true, ref: "user" },
+    type: {
+      type: String,
+      enum: ["monthly", "manual"],
+      default: "manual",
+      required: true,
+    },
+    description: { type: String, required: true },
     expireDate: { type: Date, required: true },
     expired: { type: Boolean, required: true },
     payed: { type: Boolean, required: true },

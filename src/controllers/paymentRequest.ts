@@ -5,12 +5,13 @@ import PaymentRequest from "../models/paymentRequest"
 import User from "../models/user"
 
 const createPaymentRequest = (req: Request, res: Response) => {
-  const { amount, user, expireDate } = req.body as IPaymentRequest
+  const { amount, user, expireDate, description } = req.body as IPaymentRequest
 
   const paymentRequest = new PaymentRequest({
     amount,
     user,
     expireDate,
+    description,
     expired: false,
     payed: false,
   })

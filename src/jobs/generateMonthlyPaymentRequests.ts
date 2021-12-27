@@ -18,6 +18,7 @@ const generatePaymentRequest = (
     expired: false,
     payed: false,
     amount: monthlyAmount,
+    type: "monthly",
   })
   paymentRequest
     .save()
