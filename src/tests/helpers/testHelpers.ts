@@ -3,6 +3,7 @@ import { IVisit } from "../../interfaces/visit"
 import Residency from "../../models/residency"
 import User from "../../models/user"
 import Visit from "../../models/visit"
+import PaymentRequest from "../../models/paymentRequest"
 
 const closeServer = async (httpServer: Server): Promise<void> => {
   return new Promise((resolve, reject) => {
@@ -56,6 +57,11 @@ const expireSingleTimeVisit = async (): Promise<void> => {
   ).exec()
 }
 
+const getPaymentRequestId = async () => {
+  const paymentRequest = await PaymentRequest.findOne({}).exec()
+  return paymentRequest
+}
+
 export default {
   closeServer,
   getResidencyId,
@@ -64,4 +70,5 @@ export default {
   getSingleTimeVisit,
   expireSingleTimeVisit,
   getVisitById,
+  getPaymentRequestId,
 }
