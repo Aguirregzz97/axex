@@ -2,7 +2,10 @@ import { Document } from "mongoose"
 import { IPaymentRequest } from "./paymentRequest"
 import { IVisit } from "./visit"
 
+type UserRole = "resident" | "admin"
+
 export default interface IUser extends Document {
+  userRole: UserRole
   firstName: string
   lastName: string
   email: string

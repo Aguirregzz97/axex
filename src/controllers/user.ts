@@ -40,6 +40,7 @@ const createUser = async (req: Request, res: Response) => {
 
   const user = new User({
     _id: new mongoose.Types.ObjectId(),
+    userRole: "resident",
     residency,
     firstName,
     lastName,

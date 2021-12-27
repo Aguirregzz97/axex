@@ -23,4 +23,17 @@ ArrivalSchema.post("save", (arrival: IArrival) => {
   })
 })
 
+ArrivalSchema.post("insertMany", (arrivals: IArrival[]) => {
+  for (let i = 0; i < arrivals.length; i += 1) {
+    Visit.updateOne(
+      { _id: arrivals[i].visit },
+      { $push: { arrivals: arrivals[i] } },
+    ).exec((err) => {
+      if (err) {
+        logging.error(NAMESPACE, err?.message || "", err)
+      }
+    })
+  }
+})
+
 export default mongoose.model<IArrival>("arrival", ArrivalSchema)

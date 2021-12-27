@@ -60,10 +60,19 @@ const SERVER = {
   testUserPassword: TEST_USER_PASSWORD,
 }
 
+const SUPER_USER_EMAIL = process.env.SUPER_USER_EMAIL || ""
+const SUPER_USER_PASSWORD = process.env.SUPER_USER_PASSWORD || ""
+
+const SUPERUSER = {
+  superUserEmail: SUPER_USER_EMAIL,
+  superUserPassword: SUPER_USER_PASSWORD,
+}
+
 const config = {
   mongo: MONGO,
   server: SERVER,
   uploadCare: UPLOAD_CARE,
+  superUser: SUPERUSER,
 }
 
 export default config

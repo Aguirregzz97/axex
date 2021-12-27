@@ -37,4 +37,17 @@ VisitSchema.post("save", (visit: IVisit) => {
   )
 })
 
+VisitSchema.post("insertMany", (visits: IVisit[]) => {
+  for (let i = 0; i < visits.length; i += 1) {
+    User.updateOne(
+      { _id: visits[i].user },
+      { $push: { visits: visits[i] } },
+    ).exec((error: CallbackError) => {
+      if (error) {
+        logging.error(NAMESPACE, error.message, error)
+      }
+    })
+  }
+})
+
 export default mongoose.model<IVisit>("visit", VisitSchema)
