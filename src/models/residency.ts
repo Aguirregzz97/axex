@@ -9,12 +9,16 @@ const ResidencySchema: Schema = new Schema(
     address: { type: String, required: true },
     email: { type: String, required: true },
     phone: { type: String, required: true },
-    announcements: {
-      type: mongoose.Types.ObjectId,
-      ref: "announcement" as DBRefs,
-    },
-    incidents: { type: mongoose.Types.ObjectId, ref: "incident" as DBRefs },
-    complaints: { type: mongoose.Types.ObjectId, ref: "complaints" as DBRefs },
+    announcements: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "announcement" as DBRefs,
+      },
+    ],
+    incidents: [{ type: mongoose.Types.ObjectId, ref: "incident" as DBRefs }],
+    complaints: [
+      { type: mongoose.Types.ObjectId, ref: "complaints" as DBRefs },
+    ],
   },
   { timestamps: true },
 )

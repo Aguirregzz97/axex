@@ -14,6 +14,7 @@ import paymentRoutes from "./routes/payment"
 import visitRoutes from "./routes/visit"
 import unitRoutes from "./routes/unit"
 import arrivalRoutes from "./routes/arrival"
+import dataInitRoutes from "./routes/dataInit"
 import auth from "./middleware/auth"
 import checkForExpiredPaymentRequests from "./jobs/checkExpiredPaymentRequest"
 import generateMonthlyPaymentRequests from "./jobs/generateMonthlyPaymentRequests"
@@ -67,6 +68,7 @@ router.use((req, res, next) => {
 })
 
 // Routes
+router.use("/api/data-init", jsonParser, dataInitRoutes)
 router.use("/api/user", jsonParser, userRoutes)
 router.use("/api/incident", auth, jsonParser, incidentRoutes)
 router.use("/api/complaint", auth, jsonParser, complaintRoutes)
