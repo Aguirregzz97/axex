@@ -15,6 +15,7 @@ const paymentRequestTests = () => {
         amount: faker.datatype.number({ min: 10, max: 500 }),
         user: await testHelpers.getUserId(),
         expireDate: paymentRequestExpireDate.toISOString(),
+        description: faker.commerce.productDescription(),
       })
     expect(response.status).toBe(201)
   })
