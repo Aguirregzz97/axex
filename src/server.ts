@@ -22,11 +22,20 @@ import generateMonthlyPaymentRequests from "./jobs/generateMonthlyPaymentRequest
 const NAMESPACE = "Server"
 const router = express()
 
+// Create the server
+const httpServer = http.createServer(router)
+
 // Connect to Mongo
 mongoose
   .connect(config.mongo.url, config.mongo.options)
   .then(() => {
     logging.info(NAMESPACE, "Connected to mongoDB!")
+    httpServer.listen(config.server.port, () => {
+      return logging.info(
+        NAMESPACE,
+        `Server running on ${config.server.hostname}:${config.server.port}`,
+      )
+    })
   })
   .catch((error) => {
     logging.error(NAMESPACE, error.message, error)
@@ -93,15 +102,6 @@ router.use((req, res) => {
   return res.status(404).json({
     message: error.message,
   })
-})
-
-// Create the server
-const httpServer = http.createServer(router)
-httpServer.listen(config.server.port, () => {
-  return logging.info(
-    NAMESPACE,
-    `Server running on ${config.server.hostname}:${config.server.port}`,
-  )
 })
 
 export default { router, httpServer }
