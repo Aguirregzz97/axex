@@ -6,4 +6,4 @@ const router = express()
 router.get("/get/residency-complaints", controller.getComplaints)
 router.post("/create/complaint", controller.createComplaint)
 
-export = router
+export default router

@@ -35,4 +35,5 @@ afterAll(async () => {
 
   await testHelpers.closeServer(server.httpServer)
   await mongoose.connection.close()
+  await server.nextApp.close()
 })
