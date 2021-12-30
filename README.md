@@ -1,6 +1,6 @@
-# axex-api
+# axex
 
-axex-api is an api to handle all request for axex, both in the web client and in the native applications.
+axex contains the admin site handled by next and an api handled by express to handle all request for axex, both in the web client and in the native applications.
 
 ## Installation
 
