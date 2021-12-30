@@ -12,4 +12,4 @@ const jsonParser = bodyParser.json()
 router.post("/create/visit", upload.single("file"), controller.createVisit)
 router.get("/get/user-visits", jsonParser, controller.getUserVisits)
 
-export = router
+export default router

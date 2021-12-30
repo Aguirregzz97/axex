@@ -6,4 +6,4 @@ const router = express()
 router.post("/create/residency", controller.createResidency)
 router.get("/get/residency", controller.getResidency)
 
-export = router
+export default router

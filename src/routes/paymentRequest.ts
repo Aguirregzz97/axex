@@ -10,4 +10,4 @@ router.get(
   controller.getResidencyPaymentRequests,
 )
 
-export = router
+export default router

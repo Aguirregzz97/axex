@@ -11,4 +11,4 @@ router.get("/get/residency-users", auth, controller.getResidencyUsers)
 router.get("/get/token", controller.generateToken)
 router.delete("/delete/logout", controller.logout)
 
-export = router
+export default router

@@ -5,4 +5,4 @@ const router = express()
 
 router.post("/create/data-init", controller.createDataInit)
 
-export = router
+export default router

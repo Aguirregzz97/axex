@@ -1,5 +1,6 @@
 import http from "http"
 import express from "express"
+import next from "next"
 import bodyParser from "body-parser"
 import mongoose from "mongoose"
 import logging from "./config/logging"
@@ -19,11 +20,16 @@ import auth from "./middleware/auth"
 import checkForExpiredPaymentRequests from "./jobs/checkExpiredPaymentRequest"
 import generateMonthlyPaymentRequests from "./jobs/generateMonthlyPaymentRequests"
 
-const NAMESPACE = "Server"
+const nextApp = next({ dev: config.server.nodeEnv !== "production" })
+const nextHandler = nextApp.getRequestHandler()
+
+// Create the router
 const router = express()
 
 // Create the server
 const httpServer = http.createServer(router)
+
+const NAMESPACE = "Server"
 
 // Connect to Mongo
 mongoose
@@ -42,7 +48,7 @@ mongoose
   })
 
 // Log Request
-router.use((req, res, next) => {
+router.use((req, res, nextMethod) => {
   logging.info(
     NAMESPACE,
     `METHOD - [${req.method}], URL - [${req.url}], IP - [${req.socket.remoteAddress}]`,
@@ -55,14 +61,14 @@ router.use((req, res, next) => {
     )
   })
 
-  next()
+  nextMethod()
 })
 
 // create middleware application/json parser
 const jsonParser = bodyParser.json()
 
 // Rules of API
-router.use((req, res, next) => {
+router.use((req, res, nextMethod) => {
   res.header("Access-Control-Allow-Origin", "*")
   res.header(
     "Access-Control-Allow-Headers",
@@ -73,7 +79,7 @@ router.use((req, res, next) => {
     res.header("Access-Control-Allow-Methods", "GET PATCH DELETE POST PUT")
     return res.status(200).json({})
   }
-  next()
+  nextMethod()
 })
 
 // Routes
@@ -95,13 +101,22 @@ if (config.server.nodeEnv === "production") {
   generateMonthlyPaymentRequests()
 }
 
-// Error Handling
-router.use((req, res) => {
-  const error = new Error("not found")
+nextApp.prepare().then(() => {
+  logging.info(NAMESPACE, "Next App Prepared!")
 
-  return res.status(404).json({
-    message: error.message,
+  // Add routing for next
+  router.all("*", (req, res) => {
+    return nextHandler(req, res)
+  })
+
+  // Error Handling
+  router.use((req, res) => {
+    const error = new Error("not found")
+
+    return res.status(404).json({
+      message: error.message,
+    })
   })
 })
 
-export default { router, httpServer }
+export default { router, httpServer, nextApp }

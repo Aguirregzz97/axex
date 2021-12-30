@@ -6,4 +6,4 @@ const router = express()
 router.get("/get/residency-announcements", controller.getAnnouncements)
 router.post("/create/announcement", controller.createAnnouncement)
 
-export = router
+export default router
