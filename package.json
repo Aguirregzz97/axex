@@ -8,7 +8,7 @@
     "start": "NODE_ENV=production nodemon --exec ts-node src/server.ts",
     "dev": "NODE_ENV=development nodemon --exec ts-node src/server.ts",
     "lint": "eslint src/**/*.ts",
-    "test": "NODE_ENV=test jest -c ./jest.unit.json --silent"
+    "test": "NODE_ENV=test jest -c ./jest.unit.json"
   },
   "engines": {
     "node": "17.1.0"
