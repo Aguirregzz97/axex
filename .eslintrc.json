@@ -13,12 +13,20 @@
   "settings": {
     "import/resolver": {
       "node": {
-        "extensions": [".js", ".ts"],
-        "moduleDirectory": ["node_modules", "src/"]
+        "extensions": [".js", ".ts", ".tsx"],
+        "moduleDirectory": [
+          "node_modules",
+          "src/",
+          "axex-admin-client/",
+          "pages/"
+        ]
       }
+    },
+    "react": {
+      "version": "detect"
     }
   },
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "react", "react-hooks"],
   "rules": {
     "quotes": ["error", "double"],
     "semi": ["error", "never"],
@@ -36,6 +44,7 @@
       }
     ],
     "object-curly-newline": "off",
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "import/no-extraneous-dependencies": "off"
   }
 }
