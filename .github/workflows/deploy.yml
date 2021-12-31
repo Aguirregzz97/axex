@@ -1,5 +1,5 @@
 # .github/workflows/heroku-deploy.yml
-name: CI
+name: Deploy To Heroku
 on:
   push:
     branches: [main]
@@ -12,8 +12,11 @@ jobs:
         with:
           node-version: "17.1.0"
       - run: yarn
+      - name: Run Lint
       - run: yarn lint
+      - name: Run Tests
       - run: yarn test
+      - name: Run Build
       - run: yarn build
       - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.12.12
