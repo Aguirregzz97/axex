@@ -33,11 +33,7 @@ afterAll(async () => {
   await PaymentRequest.deleteMany({})
   await Payment.deleteMany({})
 
-  console.log("Closing Server")
-
   await testHelpers.closeServer(server.httpServer)
-
-  console.log("Closing Mongo")
 
   await mongoose.connection.close()
 })
