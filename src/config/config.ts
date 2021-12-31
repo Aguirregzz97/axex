@@ -12,19 +12,13 @@ const MONGO_OPTIONS = {
   retryWrites: false,
 }
 
-const { MONGO_URL, MONGO_TEST_URL, MONGO_DEV_URL, NODE_ENV } = process.env
+const { MONGO_URL, MONGO_TEST_URL, NODE_ENV } = process.env
 
 const getMongoUrl = () => {
-  switch (NODE_ENV) {
-    case "production":
-      return MONGO_URL
-    case "development":
-      return MONGO_DEV_URL
-    case "test":
-      return MONGO_TEST_URL
-    default:
-      return MONGO_DEV_URL
+  if (NODE_ENV === "test") {
+    return MONGO_TEST_URL
   }
+  return MONGO_URL
 }
 
 const MONGO_USERNAME = process.env.MONGO_USERNAME || "username"
@@ -46,14 +40,12 @@ const UPLOAD_CARE = {
 }
 
 const API_URL = process.env.API_URL || "http://localhost:1337"
-const SERVER_HOSTNAME = process.env.SERVER_HOSTNAME || "localhost"
 const SERVER_PORT = process.env.SERVER_PORT || 1337
 const TEST_USER_EMAIL = process.env.TEST_USER_EMAIL || ""
 const TEST_USER_PASSWORD = process.env.TEST_USER_PASSWORD || ""
 
 const SERVER = {
   apiUrl: API_URL,
-  hostname: SERVER_HOSTNAME,
   port: SERVER_PORT,
   nodeEnv: NODE_ENV,
   testUserEmail: TEST_USER_EMAIL,

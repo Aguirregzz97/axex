@@ -39,7 +39,7 @@ mongoose
     httpServer.listen(config.server.port, () => {
       return logging.info(
         NAMESPACE,
-        `Server running on ${config.server.hostname}:${config.server.port}`,
+        `Server running on ${config.server.apiUrl}`,
       )
     })
   })
