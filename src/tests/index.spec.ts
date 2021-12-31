@@ -33,10 +33,6 @@ afterAll(async () => {
   await PaymentRequest.deleteMany({})
   await Payment.deleteMany({})
 
-  console.log("Closing Next")
-
-  await server.nextApp.close()
-
   console.log("Closing Server")
 
   await testHelpers.closeServer(server.httpServer)

@@ -101,22 +101,24 @@ if (config.server.nodeEnv === "production") {
   generateMonthlyPaymentRequests()
 }
 
-nextApp.prepare().then(() => {
-  logging.info(NAMESPACE, "Next App Prepared!")
+if (config.server.nodeEnv !== "test") {
+  nextApp.prepare().then(() => {
+    logging.info(NAMESPACE, "Next App Prepared!")
 
-  // Add routing for next
-  router.use("/", (req, res) => {
-    return nextHandler(req, res)
-  })
+    // Add routing for next
+    router.use("/", (req, res) => {
+      return nextHandler(req, res)
+    })
 
-  // Error Handling
-  router.use((req, res) => {
-    const error = new Error("not found")
+    // Error Handling
+    router.use((req, res) => {
+      const error = new Error("not found")
 
-    return res.status(404).json({
-      message: error.message,
+      return res.status(404).json({
+        message: error.message,
+      })
     })
   })
-})
+}
 
 export default { router, httpServer, nextApp }
