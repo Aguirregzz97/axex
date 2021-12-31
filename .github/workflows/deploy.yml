@@ -3,6 +3,23 @@ name: Deploy To Heroku
 on:
   push:
     branches: [main]
+
+env:
+  MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
+  MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
+  MONGO_URL: ${{ secrets.MONGO_URL }}
+  MONGO_DEV_URL: ${{ secrets.MONGO_DEV_URL }}
+  MONGO_TEST_URL: ${{ secrets.MONGO_TEST_URL }}
+  ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+  REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
+  SUPER_USER_EMAIL: ${{ secrets.SUPER_USER_EMAIL }}
+  SUPER_USER_PASSWORD: ${{ secrets.SUPER_USER_PASSWORD }}
+  API_URL: ${{ secrets.API_URL }}
+  SERVER_HOSTNAME: ${{ secrets.SERVER_HOSTNAME }}
+  SERVER_PORT: ${{ secrets.SERVER_PORT }}
+  TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+  TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+
 jobs:
   heroku-deploy:
     runs-on: ubuntu-latest
