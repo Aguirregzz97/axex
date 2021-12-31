@@ -9,7 +9,9 @@ const Home = () => {
         onClick={() => {
           setCounter(counter + 1)
         }}
-      ></button>
+      >
+        hahha
+      </button>
     </>
   )
 }

@@ -105,7 +105,7 @@ nextApp.prepare().then(() => {
   logging.info(NAMESPACE, "Next App Prepared!")
 
   // Add routing for next
-  router.all("*", (req, res) => {
+  router.use("/", (req, res) => {
     return nextHandler(req, res)
   })
 
