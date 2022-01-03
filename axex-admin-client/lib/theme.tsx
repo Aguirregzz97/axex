@@ -5,7 +5,7 @@ const styles = {
   global: (props: any) => {
     return {
       body: {
-        bg: mode("#F0E7DB", "#202023")(props),
+        bg: mode("#f6f6f6", "#f6f6f6")(props),
       },
     }
   },
@@ -43,10 +43,7 @@ const colors = {
   glassTeal: "#88CCCA",
 }
 
-const config = {
-  initalColorMode: "dark",
-  useSystemColorMode: true,
-}
+const config = {}
 
 const theme = extendTheme({ config, styles, components, colors, fonts })
 
