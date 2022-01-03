@@ -51,8 +51,14 @@ const initResidency = async (): Promise<mongoose.Types.ObjectId> => {
   return new mongoose.Types.ObjectId()
 }
 
-const initAdminUser = async (residencyId: mongoose.Types.ObjectId) => {
+const initAdminUser = async () => {
   logging.info(NAMESPACE, "Creating Super User...")
+  const residency = await Residency.findOne().select("_id").exec()
+
+  if (residency === null) {
+    throw new Error("Could not find residency")
+  }
+
   const email = config.superUser.superUserEmail
   const password = config.superUser.superUserPassword
   const salt = await bcrypyt.genSalt()
@@ -61,7 +67,7 @@ const initAdminUser = async (residencyId: mongoose.Types.ObjectId) => {
   const user = new User({
     _id: new mongoose.Types.ObjectId(),
     userRole: "admin",
-    residency: residencyId,
+    residency: residency.id,
     firstName: "Andres",
     lastName: "Aguirre",
     phone: faker.phone.phoneNumber(),
@@ -108,7 +114,7 @@ const createUser = async (
 }
 
 // init residents
-const initUsers = async (residencyId: mongoose.Types.ObjectId) => {
+const initUsers = async () => {
   logging.info(NAMESPACE, "Creating Users...")
 
   const promises: Promise<
@@ -117,8 +123,14 @@ const initUsers = async (residencyId: mongoose.Types.ObjectId) => {
     }
   >[] = []
 
+  const residency = await Residency.findOne().select("_id").exec()
+
+  if (residency === null) {
+    throw new Error("Could Not Get Residency")
+  }
+
   for (let i = 0; i < 80; i += 1) {
-    promises.push(createUser(residencyId))
+    promises.push(createUser(residency.id))
   }
   const users = await Promise.all(promises)
   await User.insertMany(users).catch((error) => {
@@ -363,9 +375,9 @@ const initPayments = async () => {
 const createDataInit = async (_req: Request, res: Response) => {
   await deleteAllDocuments()
   try {
-    const residencyId = await initResidency()
-    await initAdminUser(residencyId)
-    await initUsers(residencyId)
+    await initResidency()
+    await initAdminUser()
+    await initUsers()
     await initUnits()
     await initVisits()
     await initArrivals()

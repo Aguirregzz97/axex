@@ -158,9 +158,12 @@ const getUsers = async (req: Request, res: Response) => {
 }
 
 const getResidencyUsers = async (req: Request, res: Response) => {
-  const { residency } = req.body
+  const { residency } = req.query as any
   try {
-    const residencyUsers = await User.find({ residency }).exec()
+    const residencyUsers = await User.find({
+      residency,
+      userRole: "resident",
+    }).exec()
     return res.status(200).json({
       residencyUsers,
     })

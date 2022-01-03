@@ -8,6 +8,7 @@ export default interface IUser extends Document {
   userRole: UserRole
   firstName: string
   lastName: string
+  residency: string
   email: string
   phone: string
   password: string
