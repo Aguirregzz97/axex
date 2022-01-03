@@ -3,6 +3,7 @@ import { Box, Text, VStack } from "@chakra-ui/layout"
 import { AspectRatio, Icon } from "@chakra-ui/react"
 import Image from "next/image"
 import {
+  RiDashboardFill,
   RiHome4Fill,
   RiTeamFill,
   RiExchangeDollarLine,
@@ -16,7 +17,7 @@ import NavLayout from "../../layouts/NavLayout"
 const navItems = [
   {
     name: "home",
-    icon: <Icon mr="7px" color="#f6f6f6" as={RiHome4Fill} w={6} h={6} />,
+    icon: <Icon mr="7px" color="#f6f6f6" as={RiDashboardFill} w={6} h={6} />,
     link: "/dashboard/home",
   },
   {
@@ -30,6 +31,11 @@ const navItems = [
       <Icon mr="7px" color="#f6f6f6" as={RiExchangeDollarLine} w={6} h={6} />
     ),
     link: "/dashboard/payments",
+  },
+  {
+    name: "units",
+    icon: <Icon mr="7px" color="#f6f6f6" as={RiHome4Fill} w={6} h={6} />,
+    link: "/dashboard/units",
   },
 ]
 
