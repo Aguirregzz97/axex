@@ -143,7 +143,9 @@ const logout = (req: Request, res: Response) => {
           message: "Refresh Token Not Found in cache",
         })
       }
-      return res.status(204)
+      return res.status(200).json({
+        message: "Successfully Logged Out",
+      })
     },
   )
 }

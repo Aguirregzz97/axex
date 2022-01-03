@@ -5,7 +5,7 @@ import auth from "../middleware/auth"
 const router = express()
 
 router.post("/create/user", controller.createUser)
-router.get("/get/login/user", controller.loginUser)
+router.post("/create/login/user", controller.loginUser)
 router.get("/get/users", auth, controller.getUsers)
 router.get("/get/residency-users", auth, controller.getResidencyUsers)
 router.get("/get/token", controller.generateToken)
