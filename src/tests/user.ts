@@ -29,7 +29,7 @@ const userTests = () => {
 
   test("should login user", async () => {
     const response = await request(server.router)
-      .get("/api/user/get/login/user")
+      .post("/api/user/create/login/user")
       .set("accept", "application/json")
       .send({
         email: userEmail,
