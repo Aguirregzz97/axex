@@ -1,10 +1,9 @@
 import axios from "axios"
-import IUser from "../../../../src/interfaces/user"
 import userHelper from "../../../helpers/userHelper"
 import useCustomQuery from "../../../hooks/useCustomQuery"
 
 type ResidencyUsersOutput = {
-  residencyUsers: IUser[]
+  residentsCount: number
 }
 
 const useResidencyUsers = (residency: string) => {
@@ -12,13 +11,13 @@ const useResidencyUsers = (residency: string) => {
 
   return useCustomQuery(["residents", residency], async () => {
     const { data } = await axios.get<ResidencyUsersOutput>(
-      "/api/user/get/residency-users",
+      "/api/user/get/residency-users/count",
       {
         params: { residency },
         headers: { Authorization: `Bearer ${accessToken}` },
       },
     )
-    return data.residencyUsers
+    return data.residentsCount
   })
 }
 

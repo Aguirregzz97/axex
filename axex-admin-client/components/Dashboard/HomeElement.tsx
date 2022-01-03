@@ -6,13 +6,13 @@ type GridElementProps = {
   headerText: string
 }
 
-const GridElement: React.FC<GridElementProps> = ({ headerText, children }) => {
+const HomeElement: React.FC<GridElementProps> = ({ headerText, children }) => {
   return (
     <AnimatedSection>
       <Box
         borderRadius="5px"
-        width="400px"
-        height="300px"
+        width="350px"
+        height="250px"
         border="1px solid #e0dee2"
         boxShadow="md"
       >
@@ -33,4 +33,4 @@ const GridElement: React.FC<GridElementProps> = ({ headerText, children }) => {
   )
 }
 
-export default GridElement
+export default HomeElement

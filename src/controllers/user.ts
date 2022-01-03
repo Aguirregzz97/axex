@@ -175,6 +175,26 @@ const getResidencyUsers = async (req: Request, res: Response) => {
   }
 }
 
+const getResidencyUsersCount = async (req: Request, res: Response) => {
+  const { residency } = req.query as any
+  try {
+    const residentsCount = await User.find({
+      residency,
+      userRole: "resident",
+    })
+      .count()
+      .exec()
+    return res.status(200).json({
+      residentsCount,
+    })
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+      error,
+    })
+  }
+}
+
 export default {
   createUser,
   loginUser,
@@ -182,4 +202,5 @@ export default {
   generateToken,
   logout,
   getResidencyUsers,
+  getResidencyUsersCount,
 }

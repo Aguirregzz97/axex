@@ -42,7 +42,7 @@ const createPayment = (req: Request, res: Response) => {
 }
 
 const getResidencyPayments = async (req: Request, res: Response) => {
-  const { residency } = req.body
+  const { residency } = req.query as any
   try {
     const residencyUsers = await User.find({ residency }).exec()
     const residencyPaymentRequests = await PaymentRequest.find({

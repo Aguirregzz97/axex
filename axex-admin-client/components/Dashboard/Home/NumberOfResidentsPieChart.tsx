@@ -7,7 +7,7 @@ import { useUser } from "../../../contexts/UserContext"
 const NumberOfResidentsPieChart = () => {
   const [user] = useUser()
 
-  const { data: residents, isLoading } = useResidencyUsers(
+  const { data: residentsCount, isLoading } = useResidencyUsers(
     user?.residency || "",
   )
 
@@ -18,8 +18,7 @@ const NumberOfResidentsPieChart = () => {
   const d = [
     {
       id: "Residents",
-      value: residents?.length,
-      color: "#1e6e7d",
+      value: residentsCount,
     },
   ]
 
