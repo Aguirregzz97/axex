@@ -1,5 +1,7 @@
 import { Request, Response } from "express"
+import { startOfMonth } from "date-fns"
 import Arrival from "../models/arrival"
+import User from "../models/user"
 import Visit from "../models/visit"
 import dateUtils from "../utils/dates"
 
@@ -87,4 +89,53 @@ const getUserVisitArrivals = async (req: Request, res: Response) => {
   }
 }
 
-export default { createArrival, getVisitArrivals, getUserVisitArrivals }
+const getResidencyArrivals = async (req: Request, res: Response) => {
+  const { residency } = req.query as any
+  try {
+    const residencyUsers = await User.find({ residency }).exec()
+    const residencyVisits = await Visit.find({
+      user: { $in: residencyUsers },
+    }).exec()
+    const residencyArrivals = await Arrival.find({
+      visit: { $in: residencyVisits },
+    }).exec()
+    return res.status(200).json({
+      residencyArrivals,
+    })
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+      error,
+    })
+  }
+}
+
+const getMonthResidencyArrivals = async (req: Request, res: Response) => {
+  const { residency } = req.query as any
+  try {
+    const residencyUsers = await User.find({ residency }).exec()
+    const residencyVisits = await Visit.find({
+      user: { $in: residencyUsers },
+    }).exec()
+    const residencyArrivals = await Arrival.find({
+      visit: { $in: residencyVisits },
+      createdAt: { $gte: startOfMonth(new Date()) },
+    }).exec()
+    return res.status(200).json({
+      residencyArrivals,
+    })
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+      error,
+    })
+  }
+}
+
+export default {
+  createArrival,
+  getVisitArrivals,
+  getUserVisitArrivals,
+  getResidencyArrivals,
+  getMonthResidencyArrivals,
+}

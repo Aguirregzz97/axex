@@ -2,6 +2,7 @@ import faker from "faker"
 import bcrypyt from "bcrypt"
 import mongoose from "mongoose"
 import { Request, Response } from "express"
+import { endOfMonth, startOfMonth } from "date-fns"
 import Residency from "../models/residency"
 import User from "../models/user"
 import Unit from "../models/unit"
@@ -151,6 +152,7 @@ const initUnits = async () => {
   const units = []
   const userIds = await User.find({ userRole: "resident" }).select("_id").exec()
   let roomNumber = 1
+  const today = new Date().getDate()
   for (let i = 0; i < userIds.length; i += 1) {
     const floorNumber = Math.floor(i / 4) + 2
     if (roomNumber === 5) roomNumber = 1
@@ -160,7 +162,7 @@ const initUnits = async () => {
       floor: Number(`${floorNumber}0${roomNumber}`),
       roomNumber,
       address: "",
-      dayOfPayment: 15,
+      dayOfPayment: today,
       monthlyPayments: true,
       monthlyAmount: getMonthlyAmountBasedOnFloor(floorNumber),
     })
@@ -285,8 +287,13 @@ const initArrivals = async () => {
     // creates a permanent arrival 0 to 5 times randomly
     const randNumArivals = Math.floor(Math.random() * 6)
     for (let j = 0; j < randNumArivals; j += 1) {
+      const arrivedAt = faker.date.between(
+        startOfMonth(new Date()),
+        endOfMonth(new Date()),
+      )
       const arrival = new Arrival({
         visit: permanentVisits[i],
+        createdAt: arrivedAt,
       })
       arrivals.push(arrival)
     }

@@ -4,6 +4,21 @@ const hasExpired = (date: Date) => {
   return today > date
 }
 
-const dateUtils = { hasExpired }
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+]
+
+const dateUtils = { hasExpired, monthNames }
 
 export default dateUtils

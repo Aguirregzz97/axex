@@ -4,15 +4,22 @@ import AnimatedSection from "../AnimatedSection"
 
 type GridElementProps = {
   headerText: string
+  width?: string
+  height?: string
 }
 
-const HomeElement: React.FC<GridElementProps> = ({ headerText, children }) => {
+const HomeElement: React.FC<GridElementProps> = ({
+  headerText,
+  children,
+  width = "350px",
+  height = "250px",
+}) => {
   return (
     <AnimatedSection>
       <Box
         borderRadius="5px"
-        width="350px"
-        height="250px"
+        width={width}
+        height={height}
         border="1px solid #e0dee2"
         boxShadow="md"
       >

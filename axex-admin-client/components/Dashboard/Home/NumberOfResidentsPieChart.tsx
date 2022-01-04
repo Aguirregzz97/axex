@@ -1,3 +1,4 @@
+import { Heading } from "@chakra-ui/layout"
 import { Spinner } from "@chakra-ui/spinner"
 import { ResponsivePie } from "@nivo/pie"
 import React from "react"
@@ -23,6 +24,10 @@ const NumberOfResidentsPieChart = () => {
   ]
 
   const colors = ["#1e3857", "#5e88b2", "#90acc8", "#c3d1df"]
+
+  if (residentsCount === 0) {
+    return <Heading>No Residents :(</Heading>
+  }
 
   return (
     <ResponsivePie

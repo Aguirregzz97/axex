@@ -6,7 +6,13 @@ const router = express()
 
 router.get("/get/visit-arrivals", auth, controller.getVisitArrivals)
 router.get("/get/user-visit-arrivals", auth, controller.getUserVisitArrivals)
-// this is a post just to make it work in chrome for now
+router.get("/get/residency-arrivals", auth, controller.getResidencyArrivals)
+router.get(
+  "/get/residency-monthly-arrivals",
+  auth,
+  controller.getMonthResidencyArrivals,
+)
+// this is a get just to make it work in chrome for now
 router.get("/create/arrival", controller.createArrival)
 
 export default router

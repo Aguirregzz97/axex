@@ -4,6 +4,7 @@ import logging from "../config/logging"
 import { IUnit } from "../interfaces/unit"
 import Unit from "../models/unit"
 import PaymentRequest from "../models/paymentRequest"
+import dateUtils from "../utils/dates"
 
 const NAMESPACE = "Server"
 
@@ -12,6 +13,8 @@ const generatePaymentRequest = (
   expireDate: string,
   monthlyAmount: number,
 ) => {
+  const today = new Date()
+  today.setMonth(today.getMonth() - 1)
   const paymentRequest = new PaymentRequest({
     user: userId,
     expireDate,
@@ -19,6 +22,9 @@ const generatePaymentRequest = (
     payed: false,
     amount: monthlyAmount,
     type: "monthly",
+    description: `Monthly Payment for ${
+      dateUtils.monthNames[today.getMonth()]
+    }`,
   })
   paymentRequest
     .save()
@@ -63,6 +69,10 @@ const generateMonthlyPaymentRequests = () => {
           }
           generatePayments(units)
         })
+      logging.info(
+        NAMESPACE,
+        "Generate Monthly Payment Request Job Finished...",
+      )
     })
     .start()
 }

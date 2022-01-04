@@ -96,7 +96,7 @@ router.use("/api/arrival", jsonParser, arrivalRoutes)
 router.use("/api/unit", auth, jsonParser, unitRoutes)
 
 // Jobs
-if (config.server.nodeEnv === "production") {
+if (config.server.nodeEnv === "development") {
   checkForExpiredPaymentRequests()
   generateMonthlyPaymentRequests()
 }

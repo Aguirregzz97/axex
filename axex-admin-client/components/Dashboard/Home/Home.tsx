@@ -6,7 +6,9 @@ import Nav from "../../Nav/Nav"
 import AnimatedSection from "../../AnimatedSection"
 import HomeElement from "../HomeElement"
 import NumberOfResidentsPieChart from "./NumberOfResidentsPieChart"
-import PaymentsPieChart from "./PaymentsPieChart"
+import ManualPaymentsPieChart from "./ManualPaymentsPieChart"
+import MonthlyPaymentsPieChart from "./MonthlyPaymentsPieChart"
+import MonthlyArrivalsBarChart from "./MonthlyArrivalsBarChart"
 
 const Home: React.FC = () => {
   return (
@@ -21,8 +23,14 @@ const Home: React.FC = () => {
         <HomeElement headerText="Number Of Residents">
           <NumberOfResidentsPieChart />
         </HomeElement>
-        <HomeElement headerText="Payments">
-          <PaymentsPieChart />
+        <HomeElement headerText="Manual Payments">
+          <ManualPaymentsPieChart />
+        </HomeElement>
+        <HomeElement headerText="Monthly Payments">
+          <MonthlyPaymentsPieChart />
+        </HomeElement>
+        <HomeElement width="800px" height="300px" headerText="Monthly Arrivals">
+          <MonthlyArrivalsBarChart />
         </HomeElement>
       </Box>
     </Nav>
