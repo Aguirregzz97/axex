@@ -2,13 +2,13 @@ import { Heading } from "@chakra-ui/layout"
 import { Spinner } from "@chakra-ui/spinner"
 import { ResponsivePie } from "@nivo/pie"
 import React from "react"
-import useResidencyUsers from "../../../api/queries/Auth/useResidencyUsers"
+import useResidentsCount from "../../../api/queries/Residents/useResidentsCount"
 import { useUser } from "../../../contexts/UserContext"
 
 const NumberOfResidentsPieChart = () => {
   const [user] = useUser()
 
-  const { data: residentsCount, isLoading } = useResidencyUsers(
+  const { data: residentsCount, isLoading } = useResidentsCount(
     user?.residency || "",
   )
 

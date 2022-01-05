@@ -2,15 +2,15 @@ import axios from "axios"
 import userHelper from "../../../helpers/userHelper"
 import useCustomQuery from "../../../hooks/useCustomQuery"
 
-type ResidencyUsersOutput = {
+type ResidentsCountOutput = {
   residentsCount: number
 }
 
-const useResidencyUsers = (residency: string) => {
+const useResidentsCount = (residency: string) => {
   const accessToken = userHelper.getUserResidency()
 
-  return useCustomQuery(["residents", residency], async () => {
-    const { data } = await axios.get<ResidencyUsersOutput>(
+  return useCustomQuery(["residents-count", residency], async () => {
+    const { data } = await axios.get<ResidentsCountOutput>(
       "/api/user/get/residency-users/count",
       {
         params: { residency },
@@ -21,4 +21,4 @@ const useResidencyUsers = (residency: string) => {
   })
 }
 
-export default useResidencyUsers
+export default useResidentsCount
