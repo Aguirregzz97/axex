@@ -79,8 +79,6 @@ const AxexTable: React.FC<AxexTableProps> = ({
     return <></>
   }
 
-  const tableRef = useRef<HTMLTableElement>(null)
-
   return (
     <>
       <TableFilter
@@ -88,7 +86,7 @@ const AxexTable: React.FC<AxexTableProps> = ({
         setGlobalFilter={setGlobalFilter}
         preGlobalFilteredRows={preGlobalFilteredRows}
       />
-      <Table ref={tableRef} {...getTableProps()}>
+      <Table {...getTableProps()}>
         <Thead bg="#1e6e7d">
           {headerGroups.map((headerGroup) => {
             return (
@@ -138,7 +136,7 @@ const AxexTable: React.FC<AxexTableProps> = ({
         display="flex"
         justifyContent="space-between"
         alignItems="center"
-        width={tableRef.current?.clientWidth}
+        width="100%"
         borderBottomRadius="10px"
         padding="14px 24px"
         bg="#1e6e7d"
