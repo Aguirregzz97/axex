@@ -1,12 +1,13 @@
 import { Button } from "@chakra-ui/button"
-import { Spinner } from "@chakra-ui/spinner"
 import React, { useMemo } from "react"
-import useResidents from "../../../api/queries/Residents/useResidents"
+import usePaginationResidents from "../../../api/queries/Residents/usePaginationResidents"
 import { useUser } from "../../../contexts/UserContext"
 import AxexTable from "../../Atoms/AxexTable"
 
 const ResidentsTable: React.FC = () => {
   const [user] = useUser()
+
+  const tableProps = usePaginationResidents(user?.residency || "")
 
   const columns = useMemo(() => {
     return [
@@ -45,13 +46,18 @@ const ResidentsTable: React.FC = () => {
     ]
   }, []) as any
 
-  const { data: residents, isLoading } = useResidents(user?.residency || "")
-
-  if (isLoading && !residents) {
-    return <Spinner />
-  }
-
-  return <AxexTable clickableRows data={residents} columns={columns} />
+  return (
+    <AxexTable
+      loading={tableProps.loading}
+      clickableRows
+      data={tableProps.data}
+      columns={columns}
+      pageSizeProp={tableProps.pageSize}
+      pageCount={tableProps.pageCount}
+      page={tableProps.page}
+      fetchData={tableProps.fetchData}
+    />
+  )
 }
 
 export default ResidentsTable

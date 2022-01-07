@@ -6,6 +6,7 @@ import dotenv from "dotenv"
 import User from "../models/user"
 import IUser from "../interfaces/user"
 import RefreshToken from "../models/refreshToken"
+import { PaginatedResponse } from "../middleware/pagination"
 
 dotenv.config()
 
@@ -157,15 +158,25 @@ const getUsers = async (req: Request, res: Response) => {
   })
 }
 
-const getResidencyUsers = async (req: Request, res: Response) => {
+const getResidencyUsers = async (
+  req: Request,
+  res: Response & PaginatedResponse,
+) => {
   const { residency } = req.query as any
+  const { pageSize } = res.paginationOptions
+  const { startIndex } = res.paginationOptions
   try {
     const residencyUsers = await User.find({
       residency,
       userRole: "resident",
-    }).exec()
+    })
+      .limit(pageSize)
+      .skip(startIndex)
+      .exec()
+    const { paginationOptions } = res
     return res.status(200).json({
-      residencyUsers,
+      ...paginationOptions,
+      data: residencyUsers,
     })
   } catch (error: any) {
     return res.status(500).json({

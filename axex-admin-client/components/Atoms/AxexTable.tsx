@@ -11,8 +11,9 @@ import {
   Text,
   Select,
   Input,
+  Spinner,
 } from "@chakra-ui/react"
-import React, { useMemo, useRef } from "react"
+import React, { useEffect } from "react"
 import { RiArrowLeftFill, RiArrowRightFill } from "react-icons/ri"
 import {
   HeaderGroup,
@@ -28,6 +29,12 @@ type AxexTableProps = {
   data: any
   clickableRows?: boolean
   onRowClicked?: () => void
+  loading: boolean
+  page: number
+  pageSizeProp: number
+  pageCount: number
+  // eslint-disable-next-line no-unused-vars
+  fetchData: (page: number, pageSize: number) => void
 }
 
 const AxexTable: React.FC<AxexTableProps> = ({
@@ -35,16 +42,23 @@ const AxexTable: React.FC<AxexTableProps> = ({
   data,
   clickableRows = false,
   onRowClicked = () => {},
+  loading,
+  pageSizeProp,
+  pageCount: controlledPageCount,
+  fetchData,
+  page: pageProp,
 }) => {
-  const memoizedData = useMemo(() => {
-    return [...data]
-  }, [data])
+  if (loading || !data) {
+    return <Spinner />
+  }
 
   const tableInstance = useTable(
     {
       columns,
-      data: memoizedData,
-      initialState: { pageIndex: 0, pageSize: 7 },
+      data,
+      initialState: { pageIndex: pageProp, pageSize: pageSizeProp },
+      manualPagination: true,
+      pageCount: controlledPageCount,
     },
     useGlobalFilter,
     useSortBy,
@@ -79,8 +93,14 @@ const AxexTable: React.FC<AxexTableProps> = ({
     return <></>
   }
 
+  useEffect(() => {
+    console.log(pageIndex, pageSize)
+    fetchData(pageIndex, pageSize)
+  }, [pageIndex, pageSize])
+
   return (
     <>
+      {loading && <Spinner />}
       <TableFilter
         globalFilter={globalFilter}
         setGlobalFilter={setGlobalFilter}
@@ -125,7 +145,11 @@ const AxexTable: React.FC<AxexTableProps> = ({
                 {...row.getRowProps()}
               >
                 {row.cells.map((cell) => {
-                  return <Td {...cell.getCellProps()}>{cell.render("Cell")}</Td>
+                  return (
+                    <Td padding="10px 20px" {...cell.getCellProps()}>
+                      {cell.render("Cell")}
+                    </Td>
+                  )
                 })}
               </Tr>
             )

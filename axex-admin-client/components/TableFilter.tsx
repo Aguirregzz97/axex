@@ -21,7 +21,7 @@ const TableFilter: React.FC<TableFilterProps> = ({
   }, 500)
 
   return (
-    <InputGroup maxW="50%" margin="auto" mb="10px">
+    <InputGroup maxW="50%" mb="10px">
       <InputLeftElement
         pointerEvents="none"
         children={<SearchIcon color="gray.300" />}
