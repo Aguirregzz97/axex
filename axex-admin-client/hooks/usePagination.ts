@@ -41,6 +41,7 @@ function usePagination<Element extends {}>(
 
   const {
     data: response,
+    isRefetching,
     isLoading,
     error,
     isError,
@@ -58,6 +59,8 @@ function usePagination<Element extends {}>(
       refetchOnMount: false,
     },
   )
+
+  console.log(isRefetching)
 
   useEffect(() => {
     if (isError && error) {
@@ -77,7 +80,7 @@ function usePagination<Element extends {}>(
 
   return {
     data: response?.data.data,
-    loading: isLoading,
+    loading: isLoading || isRefetching,
     pageCount,
     page: tableQueryParams.page - 1,
     pageSize: tableQueryParams.pageSize,
