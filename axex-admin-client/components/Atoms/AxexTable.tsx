@@ -33,8 +33,10 @@ type AxexTableProps = {
   page: number
   pageSizeProp: number
   pageCount: number
+  search: string
+  totalDataCount: number
   // eslint-disable-next-line no-unused-vars
-  fetchData: (page: number, pageSize: number) => void
+  fetchData: (page: number, pageSize: number, search: string) => void
 }
 
 const AxexTable: React.FC<AxexTableProps> = ({
@@ -47,6 +49,8 @@ const AxexTable: React.FC<AxexTableProps> = ({
   pageCount: controlledPageCount,
   fetchData,
   page: pageProp,
+  search,
+  totalDataCount,
 }) => {
   if (!data) {
     return <></>
@@ -56,7 +60,11 @@ const AxexTable: React.FC<AxexTableProps> = ({
     {
       columns,
       data,
-      initialState: { pageIndex: pageProp, pageSize: pageSizeProp },
+      initialState: {
+        pageIndex: pageProp,
+        pageSize: pageSizeProp,
+        globalFilter: search,
+      },
       manualPagination: true,
       pageCount: controlledPageCount,
     },
@@ -71,7 +79,6 @@ const AxexTable: React.FC<AxexTableProps> = ({
     prepareRow,
     state: { pageIndex, pageSize, globalFilter },
     setGlobalFilter,
-    preGlobalFilteredRows,
     page,
     canNextPage,
     canPreviousPage,
@@ -94,17 +101,18 @@ const AxexTable: React.FC<AxexTableProps> = ({
   }
 
   useEffect(() => {
-    fetchData(pageIndex, pageSize)
-  }, [pageIndex, pageSize])
+    fetchData(pageIndex, pageSize, globalFilter)
+  }, [pageIndex, pageSize, globalFilter])
 
   return (
     <>
       <TableFilter
         globalFilter={globalFilter}
         setGlobalFilter={setGlobalFilter}
-        preGlobalFilteredRows={preGlobalFilteredRows}
+        gotoPage={gotoPage}
+        totalDataCount={totalDataCount}
       />
-      <Box opacity={loading ? "0.7" : ""}>
+      <Box overflowX="scroll" opacity={loading ? "0.7" : ""}>
         <Table position="relative" {...getTableProps()}>
           {loading && (
             <Spinner size="lg" position="absolute" left="50%" top="50%" />

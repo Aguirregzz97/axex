@@ -56,6 +56,8 @@ const ResidentsTable: React.FC = () => {
       pageCount={tableProps.pageCount}
       page={tableProps.page}
       fetchData={tableProps.fetchData}
+      search={tableProps.search}
+      totalDataCount={tableProps.totalDataCount}
     />
   )
 }

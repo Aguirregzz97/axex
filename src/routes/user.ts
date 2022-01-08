@@ -2,7 +2,6 @@ import express from "express"
 import controller from "../controllers/user"
 import auth from "../middleware/auth"
 import pagination from "../middleware/pagination"
-import User from "../models/user"
 
 const router = express()
 
@@ -13,7 +12,7 @@ router.get("/get/residency-users/count", controller.getResidencyUsersCount)
 router.get(
   "/get/residency-users",
   auth,
-  pagination.paginatedOptions(User, { userRole: "resident" }),
+  pagination.paginatedOptions,
   controller.getResidencyUsers as any,
 )
 router.get("/get/token", controller.generateToken)

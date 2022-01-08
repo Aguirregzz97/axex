@@ -4,19 +4,23 @@ import React, { useState } from "react"
 import { useAsyncDebounce } from "react-table"
 
 type TableFilterProps = {
-  preGlobalFilteredRows: any
+  totalDataCount: number
   globalFilter: any
-  setGlobalFilter: any
+  // eslint-disable-next-line no-unused-vars
+  setGlobalFilter: (filterValue: any) => void
+  // eslint-disable-next-line no-unused-vars
+  gotoPage: (updater: number | ((pageIndex: number) => number)) => void
 }
 
 const TableFilter: React.FC<TableFilterProps> = ({
-  preGlobalFilteredRows,
   globalFilter,
   setGlobalFilter,
+  gotoPage,
+  totalDataCount,
 }) => {
-  const count = preGlobalFilteredRows.length
   const [searchValue, setSearchValue] = useState(globalFilter)
   const handleOnChange = useAsyncDebounce((value) => {
+    gotoPage(0)
     setGlobalFilter(value || undefined)
   }, 500)
 
@@ -33,7 +37,7 @@ const TableFilter: React.FC<TableFilterProps> = ({
           handleOnChange(e.target.value)
         }}
         type="tel"
-        placeholder={`${count} records...`}
+        placeholder={`${totalDataCount} records...`}
       />
     </InputGroup>
   )

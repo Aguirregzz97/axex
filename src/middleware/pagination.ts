@@ -4,6 +4,7 @@ export type PaginationOptions = {
   page: number
   pageSize: number
   startIndex: number
+  search: string
   totalDataCount: number
 }
 
@@ -11,26 +12,24 @@ export type PaginatedResponse = {
   paginationOptions: PaginationOptions
 }
 
-const paginatedOptions = (model: any, condition: any) => {
-  return async (req: Request, res: any, next: NextFunction) => {
-    const page = Number(req.query.page)
-    const pageSize = Number(req.query.pageSize)
+const paginatedOptions = async (req: Request, res: any, next: NextFunction) => {
+  const page = Number(req.query.page)
+  const pageSize = Number(req.query.pageSize)
+  const { search } = req.query as any
 
-    const startIndex = (page - 1) * pageSize
+  const startIndex = (page - 1) * pageSize
 
-    const queryCount = await model.count(condition).exec()
-
-    const paginationOptions: PaginationOptions = {
-      pageSize,
-      startIndex,
-      page,
-      totalDataCount: queryCount,
-    }
-
-    res.paginationOptions = paginationOptions
-
-    next()
+  const paginationOptions: PaginationOptions = {
+    pageSize,
+    startIndex,
+    page,
+    search,
+    totalDataCount: 0,
   }
+
+  res.paginationOptions = paginationOptions
+
+  next()
 }
 
 export default { paginatedOptions }

@@ -32,4 +32,11 @@ const UserSchema: Schema = new Schema(
   { timestamps: true },
 )
 
+UserSchema.index({
+  firstName: "text",
+  lastName: "text",
+  email: "text",
+  phone: "text",
+})
+
 export default mongoose.model<IUser>("user", UserSchema)

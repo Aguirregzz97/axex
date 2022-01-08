@@ -36,6 +36,7 @@ function usePagination<Element extends {}>(
     {
       page: 1,
       pageSize: 7,
+      search: "",
     },
   )
 
@@ -60,8 +61,6 @@ function usePagination<Element extends {}>(
     },
   )
 
-  console.log(isRefetching)
-
   useEffect(() => {
     if (isError && error) {
       // eslint-disable-next-line
@@ -69,9 +68,9 @@ function usePagination<Element extends {}>(
     }
   }, [error, isError])
 
-  const fetchData = (pageParam: number, pageSize: number) => {
+  const fetchData = (pageParam: number, pageSize: number, search: string) => {
     const page = pageParam + 1
-    setTableQueryParams({ page, pageSize })
+    setTableQueryParams({ page, pageSize, search })
   }
 
   const pageCount = Math.ceil(
@@ -84,6 +83,8 @@ function usePagination<Element extends {}>(
     pageCount,
     page: tableQueryParams.page - 1,
     pageSize: tableQueryParams.pageSize,
+    search: tableQueryParams.search,
+    totalDataCount: response?.data.totalDataCount || 0,
     fetchData,
   }
 }
