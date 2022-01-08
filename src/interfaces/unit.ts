@@ -7,9 +7,9 @@ export interface IUnit extends Document {
   user: IUser
   type: UnitType
   monthlyPayments: boolean
-  monthlyAmount: number
+  monthlyAmount: string
   dayOfPayment: number
-  floor: number
-  roomNumber: number
+  floor: string
+  roomNumber: string
   address: string
 }

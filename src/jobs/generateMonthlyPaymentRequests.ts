@@ -11,7 +11,7 @@ const NAMESPACE = "Server"
 const generatePaymentRequest = (
   userId: mongoose.Types.ObjectId,
   expireDate: string,
-  monthlyAmount: number,
+  monthlyAmount: string,
 ) => {
   const today = new Date()
   today.setMonth(today.getMonth() - 1)
@@ -20,7 +20,7 @@ const generatePaymentRequest = (
     expireDate,
     expired: false,
     payed: false,
-    amount: monthlyAmount,
+    amount: Number(monthlyAmount),
     type: "monthly",
     description: `Monthly Payment for ${
       dateUtils.monthNames[today.getMonth()]
