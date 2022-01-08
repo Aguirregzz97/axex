@@ -20,6 +20,7 @@ import auth from "./middleware/auth"
 import checkForExpiredPaymentRequests from "./jobs/checkExpiredPaymentRequest"
 import generateMonthlyPaymentRequests from "./jobs/generateMonthlyPaymentRequests"
 import User from "./models/user"
+import Unit from "./models/unit"
 
 const nextApp = next({ dev: config.server.nodeEnv !== "production" })
 const nextHandler = nextApp.getRequestHandler()
@@ -85,6 +86,7 @@ router.use((req, res, nextMethod) => {
 
 // Create Indexes
 User.createIndexes()
+Unit.createIndexes()
 
 // Routes
 router.use("/api/data-init", jsonParser, dataInitRoutes)

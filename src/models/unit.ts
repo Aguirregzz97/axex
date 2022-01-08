@@ -11,9 +11,9 @@ const UnitSchema: Schema = new Schema(
     unitType: { type: String, required: true },
     monthlyPayments: { type: Boolean, required: true },
     dayOfPayment: { type: Number },
-    monthlyAmount: { type: Number },
-    floor: { type: Number },
-    roomNumber: { type: Number },
+    monthlyAmount: { type: String },
+    floor: { type: String },
+    roomNumber: { type: String },
     address: { type: String },
   },
   { timestamps: true },
@@ -25,6 +25,13 @@ UnitSchema.post("save", (unit: IUnit) => {
       logging.error(NAMESPACE, error.message, error)
     }
   })
+})
+
+UnitSchema.index({
+  floor: "text",
+  roomNumber: "text",
+  monthlyAmount: "text",
+  address: "text",
 })
 
 export default mongoose.model<IUnit>("unit", UnitSchema)

@@ -159,12 +159,12 @@ const initUnits = async () => {
     const unit = new Unit({
       user: userIds[i],
       unitType: "apartment",
-      floor: Number(`${floorNumber}0${roomNumber}`),
-      roomNumber,
+      floor: String(floorNumber),
+      roomNumber: `${floorNumber}0${roomNumber}`,
       address: "",
       dayOfPayment: today,
       monthlyPayments: true,
-      monthlyAmount: getMonthlyAmountBasedOnFloor(floorNumber),
+      monthlyAmount: String(getMonthlyAmountBasedOnFloor(floorNumber)),
     })
 
     units.push(unit)
