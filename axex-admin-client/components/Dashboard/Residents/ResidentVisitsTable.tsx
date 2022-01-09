@@ -10,7 +10,6 @@ type ResidentsVisitsTableProps = {
 const ResidentsVisitsTable: React.FC<ResidentsVisitsTableProps> = ({
   residentId,
 }) => {
-  console.log(residentId)
   const tableProps = usePaginationResidentVisits(residentId)
 
   const columns = useMemo(() => {
@@ -48,6 +47,7 @@ const ResidentsVisitsTable: React.FC<ResidentsVisitsTableProps> = ({
 
   return (
     <AxexTable
+      title="Visits"
       loading={tableProps.loading}
       clickableRows
       data={tableProps.data}

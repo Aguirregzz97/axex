@@ -1,20 +1,36 @@
 import React from "react"
-import { RiTeamFill } from "react-icons/ri"
+import {
+  RiHashtag,
+  RiLineHeight,
+  RiMoneyDollarBoxLine,
+  RiTeamFill,
+} from "react-icons/ri"
 import { Icon } from "@chakra-ui/icons"
-import { Box, Button, Heading, Spinner, useToast } from "@chakra-ui/react"
+import {
+  Box,
+  Button,
+  Heading,
+  List,
+  Spinner,
+  useToast,
+  ListItem,
+  ListIcon,
+} from "@chakra-ui/react"
 import { useRouter } from "next/router"
 import Nav from "../../Nav/Nav"
 import AnimatedSection from "../../AnimatedSection"
 import Header from "../../Header"
 import useResident from "../../../api/queries/Residents/useResident"
-import ListItem from "../../ListItem"
+import AxexListItem from "../../AxexListItem"
 import useBlockUser from "../../../api/mutations/Resident/useBlockResident"
 import ResidentVisitsTable from "./ResidentVisitsTable"
+import useUserUnit from "../../../api/queries/Units/useUserUnit"
 
 const ResidentInfo: React.FC = () => {
   const router = useRouter()
 
   const userId: string = router.query.id as string
+  if (!userId) return <></>
 
   const {
     data: resident,
@@ -22,11 +38,11 @@ const ResidentInfo: React.FC = () => {
     refetch,
   } = useResident(userId)
 
+  const { data: unit, isLoading: isLoadingUnit } = useUserUnit(userId)
+
   const { mutateAsync: blockUser, isLoading: isBlocking } = useBlockUser(userId)
 
   const toast = useToast()
-
-  if (!userId) return <></>
 
   const handleBlockUser = async (blockStatus: boolean) => {
     try {
@@ -77,18 +93,33 @@ const ResidentInfo: React.FC = () => {
             >
               {resident?.firstName} {resident?.lastName}
             </Heading>
-            <Box
-              borderTop="3px solid #e7ebf3"
-              borderBottom="3px solid #e7ebf3"
-              padding="5px 0px"
-              mb="40px"
-            >
-              <Heading mb="20px" as="h1" fontSize="22px" color="#1e6e7d">
-                Visits
-              </Heading>
+            <AxexListItem
+              title="Unit"
+              description="Resident Unit Information"
+              content={
+                <List spacing={1}>
+                  {isLoadingUnit && <Spinner size="lg" />}
+                  <ListItem>
+                    <ListIcon as={RiLineHeight} color="#1e6e7d" />
+                    Floor <strong>{unit?.floor}</strong>
+                  </ListItem>
+                  <ListItem>
+                    <ListIcon as={RiHashtag} color="#1e6e7d" />
+                    Room Number <strong>{unit?.roomNumber}</strong>
+                  </ListItem>
+                  {unit?.monthlyAmount && (
+                    <ListItem>
+                      <ListIcon as={RiMoneyDollarBoxLine} color="#1e6e7d" />
+                      Monthly Payment <strong>{unit?.monthlyAmount}$</strong>
+                    </ListItem>
+                  )}
+                </List>
+              }
+            />
+            <Box padding="5px 0px" m="50px">
               <ResidentVisitsTable residentId={userId} />
             </Box>
-            <ListItem
+            <AxexListItem
               title={resident?.blocked ? "Blocked" : "Not Blocked"}
               description={`Resident currently ${
                 resident?.blocked ? "blocked, unblock" : "not blocked, block"

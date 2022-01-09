@@ -89,7 +89,7 @@ const getResidencyUnits = async (
 }
 
 const getUserUnit = (req: Request, res: Response) => {
-  const { user } = req.body
+  const { user } = req.query as any
   Unit.find({ user }).exec((error, unit) => {
     if (error) {
       return res.status(500).json({

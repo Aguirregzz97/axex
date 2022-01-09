@@ -9,7 +9,7 @@ import { useUser } from "../../../contexts/UserContext"
 import Header from "../../Header"
 import Nav from "../../Nav/Nav"
 import AnimatedSection from "../../AnimatedSection"
-import ListItem from "../../ListItem"
+import AxexListItem from "../../AxexListItem"
 import useLogout from "../../../api/mutations/Auth/useLogout"
 
 const Profile: React.FC = () => {
@@ -56,7 +56,7 @@ const Profile: React.FC = () => {
           <Heading mb="20px" as="h1" fontSize="26px" color="#1e6e7d">
             Actions
           </Heading>
-          <ListItem
+          <AxexListItem
             title="Logout"
             description="logout from application"
             content={

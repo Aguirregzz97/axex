@@ -37,6 +37,7 @@ type AxexTableProps = {
   pageCount: number
   search: string
   totalDataCount: number
+  title?: string
   // eslint-disable-next-line no-unused-vars
   fetchData: (page: number, pageSize: number, search: string) => void
 }
@@ -53,6 +54,7 @@ const AxexTable: React.FC<AxexTableProps> = ({
   page: pageProp,
   search,
   totalDataCount,
+  title = "",
 }) => {
   if (!data) {
     return <></>
@@ -113,6 +115,7 @@ const AxexTable: React.FC<AxexTableProps> = ({
         setGlobalFilter={setGlobalFilter}
         gotoPage={gotoPage}
         totalDataCount={totalDataCount}
+        title={title}
       />
       <Box overflowX="scroll" opacity={loading ? "0.7" : ""}>
         <Table position="relative" {...getTableProps()}>

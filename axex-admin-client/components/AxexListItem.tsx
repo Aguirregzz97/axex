@@ -7,7 +7,11 @@ type ListItemProps = {
   content: ReactNode
 }
 
-const ListItem: React.FC<ListItemProps> = ({ title, description, content }) => {
+const AxexListItem: React.FC<ListItemProps> = ({
+  title,
+  description,
+  content,
+}) => {
   return (
     <Box
       borderTop="2px solid #e7ebf3"
@@ -33,4 +37,4 @@ const ListItem: React.FC<ListItemProps> = ({ title, description, content }) => {
   )
 }
 
-export default ListItem
+export default AxexListItem
