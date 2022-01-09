@@ -17,6 +17,7 @@ import React, { useEffect } from "react"
 import { RiArrowLeftFill, RiArrowRightFill } from "react-icons/ri"
 import {
   HeaderGroup,
+  Row,
   useGlobalFilter,
   usePagination,
   useSortBy,
@@ -28,7 +29,8 @@ type AxexTableProps = {
   columns: any
   data: any
   clickableRows?: boolean
-  onRowClicked?: () => void
+  // eslint-disable-next-line no-unused-vars
+  onRowClicked?: (id: string) => void
   loading: boolean
   page: number
   pageSizeProp: number
@@ -144,12 +146,15 @@ const AxexTable: React.FC<AxexTableProps> = ({
             })}
           </Thead>
           <Tbody {...getTableBodyProps()}>
-            {page.map((row, index) => {
+            {page.map((row: Row<object>, index) => {
               prepareRow(row)
               return (
                 <Tr
                   bg={index % 2 === 0 ? "#edf2f7" : ""}
-                  onClick={onRowClicked}
+                  onClick={() => {
+                    const rowClicked: any = row.original
+                    onRowClicked(rowClicked._id)
+                  }}
                   _hover={{
                     cursor: clickableRows ? "pointer" : "",
                     bg: clickableRows ? "#c3d1df !important" : "",
@@ -186,7 +191,7 @@ const AxexTable: React.FC<AxexTableProps> = ({
                 setPageSize(Number(e.target.value))
               }}
             >
-              {[7, 14, 21, 28, 35].map((ps) => {
+              {[7, 14, 21, 28, 35, 42, 49, 56, 63, 70].map((ps) => {
                 return (
                   <option key={ps} value={ps}>
                     Show {ps}

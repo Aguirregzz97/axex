@@ -219,6 +219,41 @@ const getResidencyUsersCount = async (req: Request, res: Response) => {
   }
 }
 
+const getUser = async (req: Request, res: Response) => {
+  const { userId } = req.query as any
+
+  try {
+    const user = await User.findById(userId).exec()
+    return res.status(200).json({
+      user,
+    })
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    })
+  }
+}
+
+const blockUser = async (req: Request, res: Response) => {
+  const { userId } = req.body
+  const { blockStatus } = req.body
+
+  try {
+    const blockedUser = await User.findOneAndUpdate(
+      { _id: userId },
+      { $set: { blocked: blockStatus } },
+      { new: true },
+    ).exec()
+    return res.status(200).json({
+      blockedUser,
+    })
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    })
+  }
+}
+
 export default {
   createUser,
   loginUser,
@@ -227,4 +262,6 @@ export default {
   logout,
   getResidencyUsers,
   getResidencyUsersCount,
+  getUser,
+  blockUser,
 }

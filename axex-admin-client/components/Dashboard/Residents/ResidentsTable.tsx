@@ -1,4 +1,5 @@
 import { Button } from "@chakra-ui/button"
+import { useRouter } from "next/router"
 import React, { useMemo } from "react"
 import usePaginationResidents from "../../../api/queries/Residents/usePaginationResidents"
 import { useUser } from "../../../contexts/UserContext"
@@ -6,6 +7,8 @@ import AxexTable from "../../Atoms/AxexTable"
 
 const ResidentsTable: React.FC = () => {
   const [user] = useUser()
+
+  const router = useRouter()
 
   const tableProps = usePaginationResidents(user?.residency || "")
 
@@ -50,6 +53,9 @@ const ResidentsTable: React.FC = () => {
     <AxexTable
       loading={tableProps.loading}
       clickableRows
+      onRowClicked={(userId: string) => {
+        router.push(`/dashboard/residents/${userId}`)
+      }}
       data={tableProps.data}
       columns={columns}
       pageSizeProp={tableProps.pageSize}

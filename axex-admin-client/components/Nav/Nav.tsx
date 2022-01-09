@@ -71,7 +71,7 @@ const Nav: React.FC = ({ children }) => {
                     display="flex"
                     alignItems="center"
                     width="100%"
-                    bg={navItem.link === router.pathname ? "#1e3857" : ""}
+                    bg={router.pathname.includes(navItem.name) ? "#1e3857" : ""}
                     _hover={{ bg: "#1e3857" }}
                   >
                     {navItem.icon}
