@@ -50,4 +50,10 @@ VisitSchema.post("insertMany", (visits: IVisit[]) => {
   }
 })
 
+VisitSchema.index({
+  firstName: "text",
+  lastName: "text",
+  visitType: "text",
+})
+
 export default mongoose.model<IVisit>("visit", VisitSchema)

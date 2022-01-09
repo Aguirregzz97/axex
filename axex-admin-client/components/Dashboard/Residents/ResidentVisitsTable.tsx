@@ -1,31 +1,31 @@
 import { Button } from "@chakra-ui/button"
 import React, { useMemo } from "react"
-import usePaginationResidencyUnits from "../../../api/queries/Units/usePaginationResidencyUnits"
-import { useUser } from "../../../contexts/UserContext"
+import usePaginationResidentVisits from "../../../api/queries/Visits/usePaginationResidentVisits"
 import AxexTable from "../../Atoms/AxexTable"
 
-const UnitsTable: React.FC = () => {
-  const [user] = useUser()
+type ResidentsVisitsTableProps = {
+  residentId: string
+}
 
-  const tableProps = usePaginationResidencyUnits(user?.residency || "")
+const ResidentsVisitsTable: React.FC<ResidentsVisitsTableProps> = ({
+  residentId,
+}) => {
+  console.log(residentId)
+  const tableProps = usePaginationResidentVisits(residentId)
 
   const columns = useMemo(() => {
     return [
       {
-        Header: "Floor",
-        accessor: "floor",
+        Header: "First Name",
+        accessor: "firstName",
       },
       {
-        Header: "Room #",
-        accessor: "roomNumber",
+        Header: "Last Name",
+        accessor: "lastName",
       },
       {
-        Header: "Monthly Payment",
-        accessor: "monthlyAmount",
-      },
-      {
-        Header: "Address",
-        accessor: "address",
+        Header: "Visit Type",
+        accessor: "visitType",
       },
       {
         id: "Edit",
@@ -62,4 +62,4 @@ const UnitsTable: React.FC = () => {
   )
 }
 
-export default UnitsTable
+export default ResidentsVisitsTable

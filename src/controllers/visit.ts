@@ -5,6 +5,8 @@ import logging from "../config/logging"
 import Visit from "../models/visit"
 import constants from "../constants/globalConstants"
 import config from "../config/config"
+import { PaginatedResponse } from "../middleware/pagination"
+import pagination from "../utils/pagination"
 
 const NAMESPACE = "Server"
 
@@ -72,12 +74,36 @@ const createVisit = async (req: Request, res: Response) => {
     })
 }
 
-const getUserVisits = async (req: Request, res: Response) => {
-  const { user } = req.body
+// paginated
+const getUserVisits = async (
+  req: Request,
+  res: Response & PaginatedResponse,
+) => {
+  const { userId } = req.query as any
+  const { pageSize } = res.paginationOptions
+  const { startIndex } = res.paginationOptions
+  const { search } = res.paginationOptions
+
   try {
-    const userVisits = await Visit.find({ user }).exec()
+    const userVisits = await Visit.find(pagination.getPaginationQuery(search))
+      .find({ user: userId })
+      .sort(pagination.getPaginationSort(search))
+      .limit(pageSize)
+      .skip(startIndex)
+      .exec()
+
+    const userVisitsCount = await Visit.find(
+      pagination.getPaginationQuery(search),
+    )
+      .find({ user: userId })
+      .count()
+
+    const { paginationOptions } = res
+    paginationOptions.totalDataCount = userVisitsCount
+
     return res.status(200).json({
-      userVisits,
+      ...paginationOptions,
+      data: userVisits,
     })
   } catch (error: any) {
     return res.status(500).json({

@@ -5,7 +5,7 @@ import { RiHome4Fill } from "react-icons/ri"
 import AnimatedSection from "../../AnimatedSection"
 import Header from "../../Header"
 import Nav from "../../Nav/Nav"
-import ResidentsTable from "./UnitsTable"
+import UnitsTable from "./UnitsTable"
 
 const Units: React.FC = () => {
   return (
@@ -21,7 +21,7 @@ const Units: React.FC = () => {
           <Heading mb="20px" as="h1" fontSize="26px" color="#1e6e7d">
             Units
           </Heading>
-          <ResidentsTable />
+          <UnitsTable />
         </Box>
       </AnimatedSection>
     </Nav>

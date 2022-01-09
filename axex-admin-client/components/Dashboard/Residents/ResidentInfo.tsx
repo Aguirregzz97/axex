@@ -9,6 +9,7 @@ import Header from "../../Header"
 import useResident from "../../../api/queries/Residents/useResident"
 import ListItem from "../../ListItem"
 import useBlockUser from "../../../api/mutations/Resident/useBlockResident"
+import ResidentVisitsTable from "./ResidentVisitsTable"
 
 const ResidentInfo: React.FC = () => {
   const router = useRouter()
@@ -24,6 +25,8 @@ const ResidentInfo: React.FC = () => {
   const { mutateAsync: blockUser, isLoading: isBlocking } = useBlockUser(userId)
 
   const toast = useToast()
+
+  if (!userId) return <></>
 
   const handleBlockUser = async (blockStatus: boolean) => {
     try {
@@ -65,9 +68,26 @@ const ResidentInfo: React.FC = () => {
             {isLoadingResident && (
               <Spinner position="absolute" top="50%" left="50%" size="lg" />
             )}
-            <Heading mb="20px" as="h1" fontSize="26px" color="#1e6e7d">
+            <Heading
+              mb="40px"
+              p="5px 0px"
+              as="h1"
+              fontSize="26px"
+              color="#1e6e7d"
+            >
               {resident?.firstName} {resident?.lastName}
             </Heading>
+            <Box
+              borderTop="3px solid #e7ebf3"
+              borderBottom="3px solid #e7ebf3"
+              padding="5px 0px"
+              mb="40px"
+            >
+              <Heading mb="20px" as="h1" fontSize="22px" color="#1e6e7d">
+                Visits
+              </Heading>
+              <ResidentVisitsTable residentId={userId} />
+            </Box>
             <ListItem
               title={resident?.blocked ? "Blocked" : "Not Blocked"}
               description={`Resident currently ${
