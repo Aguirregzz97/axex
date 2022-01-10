@@ -4,7 +4,7 @@ import IUser from "./user"
 type PaymentRequestType = "monthly" | "manual"
 export interface IPaymentRequest extends Document {
   user: IUser
-  amount: number
+  amount: string
   expireDate: Date
   expired: boolean
   payed: boolean

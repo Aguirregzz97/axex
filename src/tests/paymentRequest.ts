@@ -12,7 +12,7 @@ const paymentRequestTests = () => {
       .set("accept", "applicaiton/json")
       .auth(process.env.TEST_ACCESS_TOKEN || "", { type: "bearer" })
       .send({
-        amount: faker.datatype.number({ min: 10, max: 500 }),
+        amount: String(faker.datatype.number({ min: 10, max: 500 })),
         user: await testHelpers.getUserId(),
         expireDate: paymentRequestExpireDate.toISOString(),
         description: faker.commerce.productDescription(),

@@ -22,6 +22,7 @@ import generateMonthlyPaymentRequests from "./jobs/generateMonthlyPaymentRequest
 import User from "./models/user"
 import Unit from "./models/unit"
 import Visit from "./models/visit"
+import PaymentRequest from "./models/paymentRequest"
 
 const nextApp = next({ dev: config.server.nodeEnv !== "production" })
 const nextHandler = nextApp.getRequestHandler()
@@ -89,6 +90,7 @@ router.use((req, res, nextMethod) => {
 User.createIndexes()
 Unit.createIndexes()
 Visit.createIndexes()
+PaymentRequest.createIndexes()
 
 // Routes
 router.use("/api/data-init", jsonParser, dataInitRoutes)

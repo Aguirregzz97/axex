@@ -25,6 +25,7 @@ import AxexListItem from "../../AxexListItem"
 import useBlockUser from "../../../api/mutations/Resident/useBlockResident"
 import ResidentVisitsTable from "./ResidentVisitsTable"
 import useUserUnit from "../../../api/queries/Units/useUserUnit"
+import ResidentPaymentsTable from "./ResidentPaymentsTable"
 
 const ResidentInfo: React.FC = () => {
   const router = useRouter()
@@ -118,6 +119,9 @@ const ResidentInfo: React.FC = () => {
             />
             <Box padding="5px 0px" m="50px">
               <ResidentVisitsTable residentId={userId} />
+            </Box>
+            <Box padding="5px 0px" m="50px">
+              <ResidentPaymentsTable residentId={userId} />
             </Box>
             <AxexListItem
               title={resident?.blocked ? "Blocked" : "Not Blocked"}

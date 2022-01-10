@@ -7,7 +7,7 @@ const NAMESPACE = "Server"
 
 const PaymentRequestSchema: Schema = new Schema(
   {
-    amount: { type: Number, required: true },
+    amount: { type: String, required: true },
     user: { type: mongoose.Types.ObjectId, required: true, ref: "user" },
     type: {
       type: String,
@@ -32,6 +32,13 @@ PaymentRequestSchema.post("save", (paymentRequest) => {
       logging.error(NAMESPACE, error.message, error)
     }
   })
+})
+
+PaymentRequestSchema.index({
+  amount: "text",
+  type: "text",
+  expireDate: "text",
+  payed: "text",
 })
 
 export default mongoose.model<IPaymentRequest>(

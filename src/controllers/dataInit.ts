@@ -329,7 +329,7 @@ const initPaymentRequests = async () => {
     const randNum = Math.floor(Math.random() * 8)
     if (randNum === 0) {
       const paymentRequest = new PaymentRequest({
-        amount: faker.datatype.number({ min: 10, max: 9000 }),
+        amount: String(faker.datatype.number({ min: 10, max: 9000 })),
         description: faker.commerce.productDescription(),
         user: users[i],
         expireDate: new Date().toISOString(),

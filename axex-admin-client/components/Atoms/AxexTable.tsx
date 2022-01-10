@@ -149,31 +149,37 @@ const AxexTable: React.FC<AxexTableProps> = ({
             })}
           </Thead>
           <Tbody {...getTableBodyProps()}>
-            {page.map((row: Row<object>, index) => {
-              prepareRow(row)
-              return (
-                <Tr
-                  bg={index % 2 === 0 ? "#edf2f7" : ""}
-                  onClick={() => {
-                    const rowClicked: any = row.original
-                    onRowClicked(rowClicked._id)
-                  }}
-                  _hover={{
-                    cursor: clickableRows ? "pointer" : "",
-                    bg: clickableRows ? "#c3d1df !important" : "",
-                  }}
-                  {...row.getRowProps()}
-                >
-                  {row.cells.map((cell) => {
-                    return (
-                      <Td padding="10px 20px" {...cell.getCellProps()}>
-                        {cell.render("Cell")}
-                      </Td>
-                    )
-                  })}
-                </Tr>
-              )
-            })}
+            {data.length === 0 ? (
+              <Text color="#1e6e7d" m="15px">
+                No data...
+              </Text>
+            ) : (
+              page.map((row: Row<object>, index) => {
+                prepareRow(row)
+                return (
+                  <Tr
+                    bg={index % 2 === 0 ? "#edf2f7" : ""}
+                    onClick={() => {
+                      const rowClicked: any = row.original
+                      onRowClicked(rowClicked._id)
+                    }}
+                    _hover={{
+                      cursor: clickableRows ? "pointer" : "",
+                      bg: clickableRows ? "#c3d1df !important" : "",
+                    }}
+                    {...row.getRowProps()}
+                  >
+                    {row.cells.map((cell) => {
+                      return (
+                        <Td padding="10px 20px" {...cell.getCellProps()}>
+                          {cell.render("Cell")}
+                        </Td>
+                      )
+                    })}
+                  </Tr>
+                )
+              })
+            )}
           </Tbody>
         </Table>
         <Box
