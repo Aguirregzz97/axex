@@ -14,27 +14,57 @@ import { useRouter } from "next/router"
 import axexLogo from "../../assets/img/axex-logo-white.png"
 import NavLayout from "../../layouts/NavLayout"
 
-const navItems = [
+export const navItems = [
   {
     name: "home",
-    icon: <Icon mr="7px" color="#f6f6f6" as={RiDashboardFill} w={6} h={6} />,
+    icon: (
+      <Icon
+        mr="7px"
+        color={{ sm: "#f6f6f6", base: "#1e6e7d" }}
+        as={RiDashboardFill}
+        w={6}
+        h={6}
+      />
+    ),
     link: "/dashboard/home",
   },
   {
     name: "residents",
-    icon: <Icon mr="7px" color="#f6f6f6" as={RiTeamFill} w={6} h={6} />,
+    icon: (
+      <Icon
+        mr="7px"
+        color={{ sm: "#f6f6f6", base: "#1e6e7d" }}
+        as={RiTeamFill}
+        w={6}
+        h={6}
+      />
+    ),
     link: "/dashboard/residents",
   },
   {
     name: "payments",
     icon: (
-      <Icon mr="7px" color="#f6f6f6" as={RiExchangeDollarLine} w={6} h={6} />
+      <Icon
+        mr="7px"
+        color={{ sm: "#f6f6f6", base: "#1e6e7d" }}
+        as={RiExchangeDollarLine}
+        w={6}
+        h={6}
+      />
     ),
     link: "/dashboard/payments",
   },
   {
     name: "units",
-    icon: <Icon mr="7px" color="#f6f6f6" as={RiHome4Fill} w={6} h={6} />,
+    icon: (
+      <Icon
+        mr="7px"
+        color={{ sm: "#f6f6f6", base: "#1e6e7d" }}
+        as={RiHome4Fill}
+        w={6}
+        h={6}
+      />
+    ),
     link: "/dashboard/units",
   },
 ]
@@ -44,6 +74,7 @@ const Nav: React.FC = ({ children }) => {
   return (
     <>
       <Box
+        display={{ base: "none", sm: "block" }}
         w="160px"
         height="100vh"
         position="fixed"
