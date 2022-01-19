@@ -10,6 +10,7 @@ router.get(
   pagination.paginatedOptions,
   controller.getResidencyUnits as any,
 )
+router.get("/get/unit", controller.getUnit)
 router.post("/create/unit", controller.createUnit)
 
 export default router

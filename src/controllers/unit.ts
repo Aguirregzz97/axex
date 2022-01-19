@@ -103,4 +103,19 @@ const getUserUnit = (req: Request, res: Response) => {
   })
 }
 
-export default { createUnit, getResidencyUnits, getUserUnit }
+const getUnit = (req: Request, res: Response) => {
+  const { id } = req.query as any
+  Unit.findOne({ _id: id }).exec((error, unit) => {
+    if (error) {
+      return res.status(500).json({
+        message: error.message,
+        error,
+      })
+    }
+    return res.status(200).json({
+      unit,
+    })
+  })
+}
+
+export default { createUnit, getResidencyUnits, getUserUnit, getUnit }
